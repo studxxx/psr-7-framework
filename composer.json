@@ -24,5 +24,9 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.4@dev"
+    },
+    "scripts": {
+        "serve": "php -S localhost:8000 -t public/ public/index.php",
+        "test": "phpunit --colors=always"
     }
 }
