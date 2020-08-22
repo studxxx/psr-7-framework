@@ -6,7 +6,8 @@
         "ext-mbstring": "*",
         "psr/http-message": "^1.0@dev",
         "roave/security-advisories": "dev-master",
-        "zendframework/zend-diactoros": "^2.1@dev"
+        "zendframework/zend-diactoros": "^2.1@dev",
+        "zendframework/zend-httphandlerrunner": "^1.1@dev"
     },
     "license": "GNU GPL",
     "authors": [
