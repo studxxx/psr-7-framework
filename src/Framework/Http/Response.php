@@ -2,7 +2,7 @@
 
 namespace Framework\Http;
 
-class Response
+class Response implements ResponseInterface
 {
     private array $headers = [];
     private $body;
@@ -49,7 +49,7 @@ class Response
         return $this->reasonPhrase;
     }
 
-    public function withStatus($code, $reasonPhrase = ''): self
+    public function withStatus(int $code, $reasonPhrase = ''): self
     {
         $new = clone $this;
         $new->statusCode = $code;
