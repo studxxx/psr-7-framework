@@ -3,7 +3,10 @@
     "description": "Demo psr-7 framework",
     "require": {
         "php": ">=7.4",
-        "roave/security-advisories": "dev-master"
+        "ext-mbstring": "*",
+        "psr/http-message": "^1.0@dev",
+        "roave/security-advisories": "dev-master",
+        "zendframework/zend-diactoros": "^2.1@dev"
     },
     "license": "GNU GPL",
     "authors": [
