@@ -26,7 +26,7 @@ class ResponseTest extends TestCase
     {
         $response = new Response($body = 'Empty', $status = 404);
 
-        self::assertEquals($body, $response->getBody());
+        self::assertEquals($body, $response->getBody()->getContents());
         self::assertEquals($status, $response->getStatusCode());
         self::assertEquals('Not Found', $response->getReasonPhrase());
     }

@@ -2,6 +2,9 @@
 
 namespace Framework\Http;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
+
 class Response implements ResponseInterface
 {
     private array $headers = [];
@@ -20,16 +23,16 @@ class Response implements ResponseInterface
 
     public function __construct($body, $status = 200)
     {
-        $this->body = $body;
+        $this->body = $body instanceof StreamInterface ? $body : new Stream($body);
         $this->statusCode = $status;
     }
 
-    public function getBody()
+    public function getBody(): StreamInterface
     {
         return $this->body;
     }
 
-    public function withBody($body): self
+    public function withBody(StreamInterface $body): self
     {
         $new = clone $this;
         $new->body = $body;
@@ -49,7 +52,7 @@ class Response implements ResponseInterface
         return $this->reasonPhrase;
     }
 
-    public function withStatus(int $code, $reasonPhrase = ''): self
+    public function withStatus($code, $reasonPhrase = ''): self
     {
         $new = clone $this;
         $new->statusCode = $code;
@@ -83,5 +86,30 @@ class Response implements ResponseInterface
         }
         $new->headers[$header] = $value;
         return $new;
+    }
+
+    public function getProtocolVersion()
+    {
+        // TODO: Implement getProtocolVersion() method.
+    }
+
+    public function withProtocolVersion($version)
+    {
+        // TODO: Implement withProtocolVersion() method.
+    }
+
+    public function getHeaderLine($name)
+    {
+        // TODO: Implement getHeaderLine() method.
+    }
+
+    public function withAddedHeader($name, $value)
+    {
+        // TODO: Implement withAddedHeader() method.
+    }
+
+    public function withoutHeader($name)
+    {
+        // TODO: Implement withoutHeader() method.
     }
 }
