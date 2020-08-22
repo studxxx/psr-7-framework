@@ -8,7 +8,9 @@ require 'vendor/autoload.php';
 
 ### Initialization
 
-$request = new Request($_GET, $_POST);
+$request = (new Request())
+    ->withQueryParams($_GET)
+    ->withParsedBody($_POST);
 
 ### Action
 
