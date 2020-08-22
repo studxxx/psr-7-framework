@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-use Framework\Http\Request;
+use Framework\Http\RequestFactory;
 
 chdir(dirname(__DIR__));
 
@@ -8,9 +8,7 @@ require 'vendor/autoload.php';
 
 ### Initialization
 
-$request = (new Request())
-    ->withQueryParams($_GET)
-    ->withParsedBody($_POST);
+$request = RequestFactory::fromGlobals();
 
 ### Action
 
