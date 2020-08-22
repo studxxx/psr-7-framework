@@ -1,0 +1,36 @@
+{
+    "name": "studxxx/psr-7-framework",
+    "description": "Demo psr-7 framework",
+    "require": {
+        "php": ">=7.4",
+        "ext-mbstring": "*",
+        "psr/http-message": "^1.0@dev",
+        "roave/security-advisories": "dev-master",
+        "zendframework/zend-diactoros": "^2.1@dev",
+        "zendframework/zend-httphandlerrunner": "^1.1@dev"
+    },
+    "license": "GNU GPL",
+    "authors": [
+        {
+            "name": "studxxx",
+            "email": "stud181177@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "src/Framework/",
+            "Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.4@dev"
+    },
+    "scripts": {
+        "serve": "php -S localhost:8000 -t public/ public/index.php",
+        "test": "phpunit --colors=always"
+    }
+}
