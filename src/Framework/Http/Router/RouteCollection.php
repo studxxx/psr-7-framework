@@ -6,19 +6,29 @@ class RouteCollection
 {
     private array $routes = [];
 
+    public function addRoute(Route $route): void
+    {
+        $this->routes[] = $route;
+    }
+
+    public function add($name, $pattern, $handler, array $methods, array $tokens = []): void
+    {
+        $this->addRoute(new Route($name, $pattern, $handler, $methods, $tokens));
+    }
+
     public function any(string $name, string $pattern, $handler, array $tokens = []): void
     {
-        $this->routes[] = new Route($name, $pattern, $handler, [], $tokens);
+        $this->addRoute(new Route($name, $pattern, $handler, [], $tokens));
     }
 
     public function get(string $name, string $pattern, $handler, array $tokens = []): void
     {
-        $this->routes[] = new Route($name, $pattern, $handler, ['GET'], $tokens);
+        $this->addRoute(new Route($name, $pattern, $handler, ['GET'], $tokens));
     }
 
     public function post(string $name, string $pattern, $handler, array $tokens = []): void
     {
-        $this->routes[] = new Route($name, $pattern, $handler, ['POST'], $tokens);
+        $this->addRoute(new Route($name, $pattern, $handler, ['POST'], $tokens));
     }
 
     /**
