@@ -1,12 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Framework\Http\Router;
+namespace Framework\Http\Router\Route;
 
-use Framework\Http\Router\Exception\RequestNotMatchedException;
-use Framework\Http\Router\Exception\RouteNotFoundException;
+use Framework\Http\Router\Result;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Route
+class RegexpRoute implements Route
 {
     public string $name;
     public string $pattern;
