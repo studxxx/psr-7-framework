@@ -3,7 +3,7 @@
 use Framework\Http\ActionResolver;
 use Framework\Http\Router\Exception\RequestNotMatchedException;
 use Framework\Http\Router\RouteCollection;
-use Framework\Http\Router\Router;
+use Framework\Http\Router\SimpleRouter;
 use App\Http\Action as Action;
 use Zend\Diactoros\Response\JsonResponse;
 use Zend\Diactoros\ServerRequestFactory;
@@ -22,7 +22,7 @@ $routes->get('about', '/about', Action\AboutAction::class);
 $routes->get('blog', '/blog', Action\Blog\IndexAction::class);
 $routes->get('blog_show', '/blog/{id}', Action\Blog\ShowAction::class, ['id' => '\d+']);
 
-$router = new Router($routes);
+$router = new SimpleRouter($routes);
 $resolver = new ActionResolver();
 
 ### Running
