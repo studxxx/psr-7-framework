@@ -24,4 +24,4 @@ or
 ```
 
 [CHANGELOG]: ./CHANGELOG.md
-[version-badge]: https://img.shields.io/badge/version-0.0.1-blue.svg
+[version-badge]: https://img.shields.io/badge/version-0.0.2-blue.svg
