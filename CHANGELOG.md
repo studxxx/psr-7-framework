@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this **demo framework** project will be documented in this file.
 
+## [0.0.2] - 2020-08-25
+### Added
+- Controller and Routing
+- aura/route package
+
 ## [0.0.1] - 2020-08-22
 - Request and Response handlers
 
