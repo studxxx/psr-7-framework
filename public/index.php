@@ -15,6 +15,10 @@ require './vendor/autoload.php';
 
 ### Initialization
 
+$params = [
+    'users' => ['admin' => 'password']
+];
+
 $aura = new RouterContainer();
 $map = $aura->getMap();
 
@@ -22,7 +26,7 @@ $map->get('home', '/', Action\HelloAction::class);
 $map->get('about', '/about', Action\AboutAction::class);
 $map->get('blog', '/blog', Action\Blog\IndexAction::class);
 $map->get('blog_show', '/blog/{id}', Action\Blog\ShowAction::class)->tokens(['id' => '\d+']);
-$map->get('cabinet', '/cabinet', Action\CabinetAction::class);
+$map->get('cabinet', '/cabinet', new Action\CabinetAction($params['users']));
 
 $router = new AuraRouterAdapter($aura);
 $resolver = new ActionResolver();

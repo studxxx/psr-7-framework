@@ -8,13 +8,26 @@ use Zend\Diactoros\Response\HtmlResponse;
 
 class CabinetAction
 {
+    private array $users;
+
+    public function __construct(array $users)
+    {
+        $this->users = $users;
+    }
+
     public function __invoke(ServerRequestInterface $request)
     {
         $username = $request->getServerParams()['PHP_AUTH_USER'] ?? null;
         $password = $request->getServerParams()['PHP_AUTH_PW'] ?? null;
 
-        if ($username === 'admin' && $password === 'password') {
-            return new HtmlResponse('I am logged in as ' . $username);
+        if (empty($username) || empty($password)) {
+            return new EmptyResponse(401, ['WWW-Authenticate' => 'Basic realm=Restricted area']);
+        }
+
+        foreach ($this->users as $name => $pass) {
+            if ($username === $name && $password === $pass) {
+                return new HtmlResponse('I am logged in as ' . $username);
+            }
         }
 
         return new EmptyResponse(401, ['WWW-Authenticate' => 'Basic realm=Restricted area']);
