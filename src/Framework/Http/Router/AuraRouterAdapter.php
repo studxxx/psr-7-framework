@@ -1,13 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Http\Router;
+namespace Framework\Http\Router;
 
 use Aura\Router\Exception\RouteNotFound;
 use Aura\Router\RouterContainer;
 use Framework\Http\Router\Exception\RequestNotMatchedException;
 use Framework\Http\Router\Exception\RouteNotFoundException;
-use Framework\Http\Router\Result;
-use Framework\Http\Router\Router;
 use Psr\Http\Message\ServerRequestInterface;
 
 class AuraRouterAdapter implements Router
