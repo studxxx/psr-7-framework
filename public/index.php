@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 
+use Framework\Http\ActionResolver;
 use Framework\Http\Router\Exception\RequestNotMatchedException;
 use Framework\Http\Router\RouteCollection;
 use Framework\Http\Router\Router;
@@ -22,6 +23,7 @@ $routes->get('blog', '/blog', Action\Blog\IndexAction::class);
 $routes->get('blog_show', '/blog/{id}', Action\Blog\ShowAction::class, ['id' => '\d+']);
 
 $router = new Router($routes);
+$resolver = new ActionResolver();
 
 ### Running
 
@@ -34,7 +36,7 @@ try {
     }
     /** @var callable $action */
     $handler = $result->getHandler();
-    $action = is_string($handler) ? new $handler() : $handler;
+    $action = $resolver->resolve($handler);
     $response = $action($request);
 } catch (RequestNotMatchedException $e) {
     $response = new JsonResponse(['error' => 'Undefined page'], 404);
