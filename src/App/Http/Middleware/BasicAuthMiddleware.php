@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\EmptyResponse;
 
-class BasicAuthActionMiddleware
+class BasicAuthMiddleware
 {
     public const ATTRIBUTE = '_user';
     private array $users;
