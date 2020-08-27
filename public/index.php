@@ -2,13 +2,11 @@
 
 use App\Http\Middleware as Middleware;
 use Aura\Router\RouterContainer;
-use Framework\Http\ActionResolver;
+use Framework\Http\Pipeline\MiddlewareResolver;
+use Framework\Http\Pipeline\Pipeline;
 use Framework\Http\Router\AuraRouterAdapter;
 use Framework\Http\Router\Exception\RequestNotMatchedException;
 use App\Http\Action as Action;
-use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\Response\JsonResponse;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
 
@@ -29,17 +27,14 @@ $map->get('home', '/', Action\HelloAction::class);
 $map->get('about', '/about', Action\AboutAction::class);
 $map->get('blog', '/blog', Action\Blog\IndexAction::class);
 $map->get('blog_show', '/blog/{id}', Action\Blog\ShowAction::class)->tokens(['id' => '\d+']);
-$map->get('cabinet', '/cabinet', function (ServerRequestInterface $request) use ($params) {
-    $pipeline = new Framework\Http\Pipeline\Pipeline();
-
-    $pipeline->pipe(new Middleware\ProfilerMiddleware());
-    $pipeline->pipe(new Middleware\BasicAuthMiddleware($params['users']));
-    $pipeline->pipe(new Action\CabinetAction());
-    return $pipeline($request, new Middleware\NotFoundHandler());
-});
+$map->get('cabinet', '/cabinet', [
+    Middleware\ProfilerMiddleware::class,
+    new Middleware\BasicAuthMiddleware($params['users']),
+    Action\CabinetAction::class,
+]);
 
 $router = new AuraRouterAdapter($aura);
-$resolver = new ActionResolver();
+$resolver = new MiddlewareResolver();
 
 ### Running
 
@@ -50,10 +45,14 @@ try {
     foreach ($result->getAttributes() as $attribute => $value) {
         $request = $request->withAttribute($attribute, $value);
     }
-    /** @var callable $action */
-    $handler = $result->getHandler();
-    $action = $resolver->resolve($handler);
-    $response = $action($request);
+
+    $handlers = $result->getHandler();
+    $pipeline = new Pipeline();
+
+    foreach (is_array($handlers) ? $handlers : [$handlers] as $handler) {
+        $pipeline->pipe($resolver->resolve($handler));
+    }
+    $response = $pipeline($request, new Middleware\NotFoundHandler());
 } catch (RequestNotMatchedException $e) {
     $response = (new Middleware\NotFoundHandler())($request);
 }
