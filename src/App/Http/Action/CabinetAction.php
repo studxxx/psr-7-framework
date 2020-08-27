@@ -2,6 +2,7 @@
 
 namespace App\Http\Action;
 
+use App\Http\Middleware\BasicAuthActionMiddleware;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 
@@ -9,6 +10,6 @@ class CabinetAction
 {
     public function __invoke(ServerRequestInterface $request)
     {
-        return new HtmlResponse('I am logged in as ' . $request->getAttribute('username'));
+        return new HtmlResponse('I am logged in as ' . $request->getAttribute(BasicAuthActionMiddleware::ATTRIBUTE));
     }
 }
