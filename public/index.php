@@ -29,11 +29,14 @@ $map->get('about', '/about', Action\AboutAction::class);
 $map->get('blog', '/blog', Action\Blog\IndexAction::class);
 $map->get('blog_show', '/blog/{id}', Action\Blog\ShowAction::class)->tokens(['id' => '\d+']);
 $map->get('cabinet', '/cabinet', function (ServerRequestInterface $request) use ($params) {
+    $profiler = new Middleware\ProfilerMiddleware();
     $auth = new Middleware\BasicAuthActionMiddleware($params['users']);
     $cabinet = new Action\CabinetAction();
 
-    return $auth($request, function (ServerRequestInterface $request) use ($cabinet) {
-        return $cabinet($request);
+    return $profiler($request, function (ServerRequestInterface $request) use ($auth, $cabinet) {
+        return $auth($request, function (ServerRequestInterface $request) use ($cabinet) {
+            return $cabinet($request);
+        });
     });
 });
 
