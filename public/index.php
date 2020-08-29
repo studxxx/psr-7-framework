@@ -30,18 +30,16 @@ $map->get('home', '/', Action\HelloAction::class);
 $map->get('about', '/about', Action\AboutAction::class);
 $map->get('blog', '/blog', Action\Blog\IndexAction::class);
 $map->get('blog_show', '/blog/{id}', Action\Blog\ShowAction::class)->tokens(['id' => '\d+']);
-$map->get('cabinet', '/cabinet', [
-    new Middleware\BasicAuthMiddleware($params['users'], new Response()),
-    Action\CabinetAction::class,
-]);
+$map->get('cabinet', '/cabinet', Action\CabinetAction::class);
 
 $router = new AuraRouterAdapter($aura);
 $resolver = new MiddlewareResolver();
-$app = new Application($resolver, new Middleware\NotFoundHandler());
+$app = new Application($resolver, new Middleware\NotFoundHandler(), new Response());
 
 $app->pipe(new Middleware\ErrorHandlerMiddleware($params['debug']));
 $app->pipe(Middleware\CredentialsMiddleware::class);
 $app->pipe(Middleware\ProfilerMiddleware::class);
+$app->pipe('cabinet', new Middleware\BasicAuthMiddleware($params['users'], new Response()));
 $app->pipe(new RouteMiddleware($router));
 $app->pipe(new DispatchMiddleware($resolver));
 

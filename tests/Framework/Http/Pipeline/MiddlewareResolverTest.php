@@ -4,11 +4,11 @@ namespace Tests\Framework\Http\Pipeline;
 
 use App\Http\Middleware\NotFoundHandler;
 use Framework\Http\Pipeline\MiddlewareResolver;
+use Interop\Http\Server\MiddlewareInterface;
+use Interop\Http\Server\RequestHandlerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\Response\HtmlResponse;
@@ -24,7 +24,7 @@ class MiddlewareResolverTest extends TestCase
     public function testDirect($handler): void
     {
         $resolver = new MiddlewareResolver();
-        $middleware = $resolver->resolve($handler);
+        $middleware = $resolver->resolve($handler, new Response());
 
         $response = $middleware(
             (new ServerRequest())->withAttribute('attribute', $value = 'value'),
@@ -43,7 +43,7 @@ class MiddlewareResolverTest extends TestCase
     public function testNext($handler): void
     {
         $resolver = new MiddlewareResolver();
-        $middleware = $resolver->resolve($handler);
+        $middleware = $resolver->resolve($handler, new Response());
 
         $response = $middleware(
             (new ServerRequest())->withAttribute('next', true),
@@ -63,7 +63,7 @@ class MiddlewareResolverTest extends TestCase
         $middleware = $resolver->resolve([
             new DummyMiddleware(),
             new CallableMiddleware(),
-        ]);
+        ], new Response());
 
         $response = $middleware(
             (new ServerRequest())->withAttribute('attribute', $value = 'value'),
