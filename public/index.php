@@ -35,6 +35,10 @@ $container->set(Middleware\BasicAuthMiddleware::class, function (Container $cont
     return new Middleware\BasicAuthMiddleware($container->get('config')['users'], new Response());
 });
 
+$container->set(MiddlewareResolver::class, function () {
+    return new MiddlewareResolver();
+});
+
 $container->set(Router::class, function () {
     $aura = new RouterContainer();
     $routes = $aura->getMap();
@@ -50,15 +54,14 @@ $container->set(Router::class, function () {
 
 ### Initialization
 
-$resolver = new MiddlewareResolver();
-$app = new Application($resolver, new Middleware\NotFoundHandler(), new Response());
+$app = new Application($container->get(MiddlewareResolver::class), new Middleware\NotFoundHandler(), new Response());
 
 $app->pipe($container->get(Middleware\ErrorHandlerMiddleware::class));
 $app->pipe(Middleware\CredentialsMiddleware::class);
 $app->pipe(Middleware\ProfilerMiddleware::class);
 $app->pipe(new RouteMiddleware($container->get(Router::class)));
 $app->pipe('cabinet', $container->get(Middleware\BasicAuthMiddleware::class));
-$app->pipe(new DispatchMiddleware($resolver));
+$app->pipe(new DispatchMiddleware($container->get(MiddlewareResolver::class)));
 
 ### Running
 
