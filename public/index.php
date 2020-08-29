@@ -49,11 +49,17 @@ try {
         $request = $request->withAttribute($attribute, $value);
     }
 
-    $handlers = $result->getHandler();
+    $handler = $result->getHandler();
 
-    foreach (is_array($handlers) ? $handlers : [$handlers] as $handler) {
-        $pipeline->pipe($resolver->resolve($handler));
+    if (is_array($handler)) {
+        $middleware = new Pipeline();
+        foreach ($handler as $item) {
+            $middleware->pipe($resolver->resolve($handler));
+        }
+    } else {
+        $middleware = $resolver->resolve($handler);
     }
+    $pipeline->pipe($middleware);
 } catch (RequestNotMatchedException $e) {}
 
 $response = $pipeline($request, new Middleware\NotFoundHandler());
