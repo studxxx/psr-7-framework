@@ -27,6 +27,14 @@ $container->set('config', [
     'users' => ['admin' => 'password'],
 ]);
 
+$container->set(Application::class, function (Container $container) {
+    return new Application(
+        $container->get(MiddlewareResolver::class),
+        new Middleware\NotFoundHandler(),
+        new Response()
+    );
+});
+
 $container->set(Middleware\ErrorHandlerMiddleware::class, function (Container $container) {
     return new Middleware\ErrorHandlerMiddleware($container->get('config')['debug']);
 });
@@ -37,6 +45,14 @@ $container->set(Middleware\BasicAuthMiddleware::class, function (Container $cont
 
 $container->set(MiddlewareResolver::class, function () {
     return new MiddlewareResolver();
+});
+
+$container->set(RouteMiddleware::class, function (Container $container) {
+    return new RouteMiddleware($container->get(Router::class));
+});
+
+$container->set(DispatchMiddleware::class, function (Container $container) {
+    return new DispatchMiddleware($container->get(MiddlewareResolver::class));
 });
 
 $container->set(Router::class, function () {
@@ -54,14 +70,15 @@ $container->set(Router::class, function () {
 
 ### Initialization
 
-$app = new Application($container->get(MiddlewareResolver::class), new Middleware\NotFoundHandler(), new Response());
+/** @var Application $app */
+$app = $container->get(Application::class);
 
 $app->pipe($container->get(Middleware\ErrorHandlerMiddleware::class));
 $app->pipe(Middleware\CredentialsMiddleware::class);
 $app->pipe(Middleware\ProfilerMiddleware::class);
-$app->pipe(new RouteMiddleware($container->get(Router::class)));
+$app->pipe($container->get(RouteMiddleware::class));
 $app->pipe('cabinet', $container->get(Middleware\BasicAuthMiddleware::class));
-$app->pipe(new DispatchMiddleware($container->get(MiddlewareResolver::class)));
+$app->pipe($container->get(DispatchMiddleware::class));
 
 ### Running
 
