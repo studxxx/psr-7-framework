@@ -37,7 +37,7 @@ $map->get('cabinet', '/cabinet', [
 
 $router = new AuraRouterAdapter($aura);
 $resolver = new MiddlewareResolver();
-$app = new Application($resolver, new Middleware\NotFoundHandler());
+$app = new Application($resolver, new Middleware\NotFoundHandler(), new Response());
 
 $app->pipe(new Middleware\ErrorHandlerMiddleware($params['debug']));
 $app->pipe(Middleware\CredentialsMiddleware::class);
