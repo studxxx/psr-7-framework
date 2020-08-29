@@ -26,11 +26,11 @@ $container->set('config', [
     'users' => ['admin' => 'password'],
 ]);
 
-$container->set('middleware.error_handler', function (Container $container) {
+$container->set(Middleware\ErrorHandlerMiddleware::class, function (Container $container) {
     return new Middleware\ErrorHandlerMiddleware($container->get('config')['debug']);
 });
 
-$container->set('middleware.basic_auth', function (Container $container) {
+$container->set(Middleware\BasicAuthMiddleware::class, function (Container $container) {
     return new Middleware\BasicAuthMiddleware($container->get('config')['users'], new Response());
 });
 
@@ -49,10 +49,10 @@ $router = new AuraRouterAdapter($aura);
 $resolver = new MiddlewareResolver();
 $app = new Application($resolver, new Middleware\NotFoundHandler(), new Response());
 
-$app->pipe($container->get('middleware.error_handler'));
+$app->pipe($container->get(Middleware\ErrorHandlerMiddleware::class));
 $app->pipe(Middleware\CredentialsMiddleware::class);
 $app->pipe(Middleware\ProfilerMiddleware::class);
-$app->pipe('cabinet', $container->get('middleware.basic_auth'));
+$app->pipe('cabinet', $container->get(Middleware\BasicAuthMiddleware::class));
 $app->pipe(new RouteMiddleware($router));
 $app->pipe(new DispatchMiddleware($resolver));
 
