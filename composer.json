@@ -5,6 +5,7 @@
         "php": ">=7.4",
         "ext-json": "*",
         "ext-mbstring": "*",
+        "ext-pdo": "*",
         "aura/router": "3.x-dev",
         "http-interop/http-middleware": "^0.5.0",
         "psr/http-message": "^1.0@dev",
