@@ -3,6 +3,7 @@
 namespace Tests\Framework\Container;
 
 use Framework\Container\Container;
+use Framework\Container\ServiceNotFoundException;
 use PHPUnit\Framework\TestCase;
 
 class ContainerTest extends TestCase
@@ -34,7 +35,7 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(ServiceNotFoundException::class);
 
         $container->get('undefined_key');
     }
