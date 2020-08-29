@@ -2,8 +2,8 @@
 
 use App\Http\Middleware as Middleware;
 use Aura\Router\RouterContainer;
+use Framework\Http\Application;
 use Framework\Http\Pipeline\MiddlewareResolver;
-use Framework\Http\Pipeline\Pipeline;
 use Framework\Http\Router\AuraRouterAdapter;
 use Framework\Http\Router\Exception\RequestNotMatchedException;
 use App\Http\Action as Action;
@@ -34,10 +34,8 @@ $map->get('cabinet', '/cabinet', [
 
 $router = new AuraRouterAdapter($aura);
 $resolver = new MiddlewareResolver();
-
-$pipeline = new Pipeline();
-
-$pipeline->pipe($resolver->resolve(Middleware\ProfilerMiddleware::class));
+$app = new Application($resolver, new Middleware\NotFoundHandler());
+$app->pipe(Middleware\ProfilerMiddleware::class);
 
 ### Running
 
@@ -48,10 +46,10 @@ try {
     foreach ($result->getAttributes() as $attribute => $value) {
         $request = $request->withAttribute($attribute, $value);
     }
-    $pipeline->pipe($resolver->resolve($result->getHandler()));
+    $app->pipe($result->getHandler());
 } catch (RequestNotMatchedException $e) {}
 
-$response = $pipeline($request, new Middleware\NotFoundHandler());
+$response = $app->run($request);
 
 ### PostProcessing
 
