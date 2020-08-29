@@ -37,7 +37,11 @@ $router = new AuraRouterAdapter($aura);
 $resolver = new MiddlewareResolver();
 
 $pipeline = new Pipeline();
-$pipeline->pipe($resolver->resolve(Middleware\ProfilerMiddleware::class));
+
+$pipeline->pipe(function ($request, $next) {
+    $object = new Middleware\ProfilerMiddleware();
+    return $object($request, $next);
+});
 
 ### Running
 
