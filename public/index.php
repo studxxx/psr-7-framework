@@ -8,6 +8,7 @@ use Framework\Http\Middleware\RouteMiddleware;
 use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraRouterAdapter;
 use App\Http\Action as Action;
+use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
 
@@ -30,7 +31,7 @@ $map->get('about', '/about', Action\AboutAction::class);
 $map->get('blog', '/blog', Action\Blog\IndexAction::class);
 $map->get('blog_show', '/blog/{id}', Action\Blog\ShowAction::class)->tokens(['id' => '\d+']);
 $map->get('cabinet', '/cabinet', [
-    new Middleware\BasicAuthMiddleware($params['users']),
+    new Middleware\BasicAuthMiddleware($params['users'], new Response()),
     Action\CabinetAction::class,
 ]);
 
@@ -47,7 +48,7 @@ $app->pipe(new DispatchMiddleware($resolver));
 ### Running
 
 $request = ServerRequestFactory::fromGlobals();
-$response = $app->run($request);
+$response = $app->run($request, new Response());
 
 ### Sending
 

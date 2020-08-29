@@ -10,6 +10,7 @@ class Next
     /** @var callable */
     private $default;
     private \SplQueue $queue;
+    private ResponseInterface $response;
 
     public function __construct(\SplQueue $queue, callable $default)
     {
@@ -17,16 +18,16 @@ class Next
         $this->queue = $queue;
     }
 
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         if ($this->queue->isEmpty()) {
-            return ($this->default)($request);
+            return ($this->default)($request, $response);
         }
 
-        $current = $this->queue->dequeue();
+        $middleware = $this->queue->dequeue();
 
-        return $current($request, function (ServerRequestInterface $request) {
-            return $this($request);
+        return $middleware($request, $response, function (ServerRequestInterface $request) use ($response) {
+            return $this($request, $response);
         });
     }
 }
