@@ -9,6 +9,7 @@ use Framework\Http\Middleware\RouteMiddleware;
 use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraRouterAdapter;
 use App\Http\Action as Action;
+use Framework\Http\Router\Router;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
@@ -34,26 +35,29 @@ $container->set(Middleware\BasicAuthMiddleware::class, function (Container $cont
     return new Middleware\BasicAuthMiddleware($container->get('config')['users'], new Response());
 });
 
+$container->set(Router::class, function () {
+    $aura = new RouterContainer();
+    $routes = $aura->getMap();
+
+    $routes->get('home', '/', Action\HelloAction::class);
+    $routes->get('about', '/about', Action\AboutAction::class);
+    $routes->get('blog', '/blog', Action\Blog\IndexAction::class);
+    $routes->get('blog_show', '/blog/{id}', Action\Blog\ShowAction::class)->tokens(['id' => '\d+']);
+    $routes->get('cabinet', '/cabinet', Action\CabinetAction::class);
+
+    return new AuraRouterAdapter($aura);
+});
+
 ### Initialization
 
-$aura = new RouterContainer();
-$map = $aura->getMap();
-
-$map->get('home', '/', Action\HelloAction::class);
-$map->get('about', '/about', Action\AboutAction::class);
-$map->get('blog', '/blog', Action\Blog\IndexAction::class);
-$map->get('blog_show', '/blog/{id}', Action\Blog\ShowAction::class)->tokens(['id' => '\d+']);
-$map->get('cabinet', '/cabinet', Action\CabinetAction::class);
-
-$router = new AuraRouterAdapter($aura);
 $resolver = new MiddlewareResolver();
 $app = new Application($resolver, new Middleware\NotFoundHandler(), new Response());
 
 $app->pipe($container->get(Middleware\ErrorHandlerMiddleware::class));
 $app->pipe(Middleware\CredentialsMiddleware::class);
 $app->pipe(Middleware\ProfilerMiddleware::class);
+$app->pipe(new RouteMiddleware($container->get(Router::class)));
 $app->pipe('cabinet', $container->get(Middleware\BasicAuthMiddleware::class));
-$app->pipe(new RouteMiddleware($router));
 $app->pipe(new DispatchMiddleware($resolver));
 
 ### Running
