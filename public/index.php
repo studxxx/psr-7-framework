@@ -28,7 +28,6 @@ $map->get('about', '/about', Action\AboutAction::class);
 $map->get('blog', '/blog', Action\Blog\IndexAction::class);
 $map->get('blog_show', '/blog/{id}', Action\Blog\ShowAction::class)->tokens(['id' => '\d+']);
 $map->get('cabinet', '/cabinet', [
-    Middleware\ProfilerMiddleware::class,
     new Middleware\BasicAuthMiddleware($params['users']),
     Action\CabinetAction::class,
 ]);
@@ -37,6 +36,7 @@ $router = new AuraRouterAdapter($aura);
 $resolver = new MiddlewareResolver();
 
 $pipeline = new Pipeline();
+
 $pipeline->pipe($resolver->resolve(Middleware\ProfilerMiddleware::class));
 
 ### Running
