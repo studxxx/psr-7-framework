@@ -21,21 +21,12 @@ require './vendor/autoload.php';
 
 $container = new Container();
 
-$container->set('debug', true);
-$container->set('users', ['admin' => 'password']);
-$container->set('db', function () {
-    return new PDO('mysql:host=mysql;port=3306;dbname=psr7', 'root', 'secret');
-});
-
-$db = $container->get('db');
-
-### Initialization
-
-$definitions = [
+$container->set('config', [
     'debug' => true,
     'users' => ['admin' => 'password'],
-    'db' => new PDO('mysql:host=mysql;port=3306;dbname=psr7', 'root', 'secret')
-];
+]);
+
+### Initialization
 
 $aura = new RouterContainer();
 $map = $aura->getMap();
@@ -50,10 +41,10 @@ $router = new AuraRouterAdapter($aura);
 $resolver = new MiddlewareResolver();
 $app = new Application($resolver, new Middleware\NotFoundHandler(), new Response());
 
-$app->pipe(new Middleware\ErrorHandlerMiddleware($container->get('debug')));
+$app->pipe(new Middleware\ErrorHandlerMiddleware($container->get('config')['debug']));
 $app->pipe(Middleware\CredentialsMiddleware::class);
 $app->pipe(Middleware\ProfilerMiddleware::class);
-$app->pipe('cabinet', new Middleware\BasicAuthMiddleware($container->get('users'), new Response()));
+$app->pipe('cabinet', new Middleware\BasicAuthMiddleware($container->get('config')['users'], new Response()));
 $app->pipe(new RouteMiddleware($router));
 $app->pipe(new DispatchMiddleware($resolver));
 
