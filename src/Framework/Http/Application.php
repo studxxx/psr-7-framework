@@ -26,7 +26,7 @@ class Application extends MiddlewarePipe
         if ($middleware === null) {
             return parent::pipe($this->resolver->resolve($path, $this->responsePrototype));
         }
-        parent::pipe($path, $this->resolver->resolve($middleware, $this->responsePrototype));
+        return parent::pipe($path, $this->resolver->resolve($middleware, $this->responsePrototype));
     }
 
     public function run(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
