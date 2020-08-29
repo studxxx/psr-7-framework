@@ -3,6 +3,7 @@
 use App\Http\Middleware as Middleware;
 use Aura\Router\RouterContainer;
 use Framework\Http\Application;
+use Framework\Http\Middleware\DispatchMiddleware;
 use Framework\Http\Middleware\RouteMiddleware;
 use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraRouterAdapter;
@@ -40,7 +41,8 @@ $app = new Application($resolver, new Middleware\NotFoundHandler());
 $app->pipe(new Middleware\ErrorHandlerMiddleware($params['debug']));
 $app->pipe(Middleware\CredentialsMiddleware::class);
 $app->pipe(Middleware\ProfilerMiddleware::class);
-$app->pipe(new RouteMiddleware($router, $resolver));
+$app->pipe(new RouteMiddleware($router));
+$app->pipe(new DispatchMiddleware($resolver));
 
 ### Running
 
