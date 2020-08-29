@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this **demo framework** project will be documented in this file.
 
+## [0.0.3] - 2020-08-29
+### Added
+- Middleware
+- pipelines
+- zendframework/zend-stratigility package
+
 ## [0.0.2] - 2020-08-25
 ### Added
 - Controller and Routing
