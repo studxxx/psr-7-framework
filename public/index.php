@@ -18,9 +18,38 @@ require './vendor/autoload.php';
 
 ### Initialization
 
-$params = [
+class Container
+{
+    private array $definitions = [];
+
+    public function get($id)
+    {
+        if (!array_key_exists($id, $this->definitions)) {
+            throw new InvalidArgumentException("Undefined parameter \"$id\"");
+        }
+        return $this->definitions[$id];
+    }
+
+    public function set($id, $value): void
+    {
+        $this->definitions[$id] = $value;
+    }
+}
+
+$container = new Container();
+
+$container->set('debug', true);
+$container->set('users', ['admin' => 'password']);
+$container->set('db', new PDO('mysql:host=mysql;port=3306;dbname=psr7', 'root', 'secret'));
+
+$db = $container->get('db');
+
+##################
+
+$definitions = [
     'debug' => true,
-    'users' => ['admin' => 'password']
+    'users' => ['admin' => 'password'],
+    'db' => new PDO('mysql:host=mysql;port=3306;dbname=psr7', 'root', 'secret')
 ];
 
 $aura = new RouterContainer();
@@ -36,10 +65,10 @@ $router = new AuraRouterAdapter($aura);
 $resolver = new MiddlewareResolver();
 $app = new Application($resolver, new Middleware\NotFoundHandler(), new Response());
 
-$app->pipe(new Middleware\ErrorHandlerMiddleware($params['debug']));
+$app->pipe(new Middleware\ErrorHandlerMiddleware($container->get('debug')));
 $app->pipe(Middleware\CredentialsMiddleware::class);
 $app->pipe(Middleware\ProfilerMiddleware::class);
-$app->pipe('cabinet', new Middleware\BasicAuthMiddleware($params['users'], new Response()));
+$app->pipe('cabinet', new Middleware\BasicAuthMiddleware($container->get('users'), new Response()));
 $app->pipe(new RouteMiddleware($router));
 $app->pipe(new DispatchMiddleware($resolver));
 
