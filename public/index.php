@@ -36,6 +36,9 @@ $map->get('cabinet', '/cabinet', [
 $router = new AuraRouterAdapter($aura);
 $resolver = new MiddlewareResolver();
 
+$pipeline = new Pipeline();
+$pipeline->pipe($resolver->resolve(Middleware\ProfilerMiddleware::class));
+
 ### Running
 
 $request = ServerRequestFactory::fromGlobals();
@@ -47,15 +50,13 @@ try {
     }
 
     $handlers = $result->getHandler();
-    $pipeline = new Pipeline();
 
     foreach (is_array($handlers) ? $handlers : [$handlers] as $handler) {
         $pipeline->pipe($resolver->resolve($handler));
     }
-    $response = $pipeline($request, new Middleware\NotFoundHandler());
-} catch (RequestNotMatchedException $e) {
-    $response = (new Middleware\NotFoundHandler())($request);
-}
+} catch (RequestNotMatchedException $e) {}
+
+$response = $pipeline($request, new Middleware\NotFoundHandler());
 
 ### PostProcessing
 
