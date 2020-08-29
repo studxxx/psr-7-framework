@@ -38,7 +38,7 @@ $resolver = new MiddlewareResolver();
 
 $pipeline = new Pipeline();
 
-$resolver->resolve(Middleware\ProfilerMiddleware::class);
+$pipeline->pipe($resolver->resolve(Middleware\ProfilerMiddleware::class));
 
 ### Running
 
