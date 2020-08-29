@@ -37,21 +37,7 @@ $router = new AuraRouterAdapter($aura);
 $resolver = new MiddlewareResolver();
 $app = new Application($resolver, new Middleware\NotFoundHandler());
 
-$app->pipe(function (\Psr\Http\Message\ServerRequestInterface $request, callable $next) use ($params) {
-    try {
-        return $next($request);
-    } catch (Throwable $e) {
-        if ($params['debug']) {
-            return new \Zend\Diactoros\Response\JsonResponse([
-                 'error' => 'Server error',
-                 'code' => $e->getCode(),
-                 'message' => $e->getMessage(),
-             ], 500);
-        }
-        return new \Zend\Diactoros\Response\HtmlResponse('Server error', 500);
-    }
-});
-
+$app->pipe(new Middleware\ErrorHandlerMiddleware($params['debug']));
 $app->pipe(Middleware\CredentialsMiddleware::class);
 $app->pipe(Middleware\ProfilerMiddleware::class);
 
