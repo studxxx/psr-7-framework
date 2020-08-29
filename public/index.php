@@ -2,6 +2,7 @@
 
 use App\Http\Middleware as Middleware;
 use Aura\Router\RouterContainer;
+use Framework\Container\Container;
 use Framework\Http\Application;
 use Framework\Http\Middleware\DispatchMiddleware;
 use Framework\Http\Middleware\RouteMiddleware;
@@ -16,25 +17,7 @@ chdir(dirname(__DIR__));
 
 require './vendor/autoload.php';
 
-### Initialization
-
-class Container
-{
-    private array $definitions = [];
-
-    public function get($id)
-    {
-        if (!array_key_exists($id, $this->definitions)) {
-            throw new InvalidArgumentException("Undefined parameter \"$id\"");
-        }
-        return $this->definitions[$id];
-    }
-
-    public function set($id, $value): void
-    {
-        $this->definitions[$id] = $value;
-    }
-}
+### Configuration
 
 $container = new Container();
 
@@ -44,7 +27,7 @@ $container->set('db', new PDO('mysql:host=mysql;port=3306;dbname=psr7', 'root', 
 
 $db = $container->get('db');
 
-##################
+### Initialization
 
 $definitions = [
     'debug' => true,
