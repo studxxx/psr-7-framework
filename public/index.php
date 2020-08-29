@@ -35,6 +35,8 @@ $map->get('cabinet', '/cabinet', [
 $router = new AuraRouterAdapter($aura);
 $resolver = new MiddlewareResolver();
 $app = new Application($resolver, new Middleware\NotFoundHandler());
+
+$app->pipe(Middleware\CredentialsMiddleware::class);
 $app->pipe(Middleware\ProfilerMiddleware::class);
 
 ### Running
@@ -50,10 +52,6 @@ try {
 } catch (RequestNotMatchedException $e) {}
 
 $response = $app->run($request);
-
-### PostProcessing
-
-$response = $response->withHeader('X-Developer', 'studxxx');
 
 ### Sending
 
