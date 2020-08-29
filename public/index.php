@@ -23,7 +23,9 @@ $container = new Container();
 
 $container->set('debug', true);
 $container->set('users', ['admin' => 'password']);
-$container->set('db', new PDO('mysql:host=mysql;port=3306;dbname=psr7', 'root', 'secret'));
+$container->set('db', function () {
+    return new PDO('mysql:host=mysql;port=3306;dbname=psr7', 'root', 'secret');
+});
 
 $db = $container->get('db');
 

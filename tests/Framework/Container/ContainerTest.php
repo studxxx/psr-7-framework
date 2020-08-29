@@ -31,6 +31,21 @@ class ContainerTest extends TestCase
     /**
      * @covers
      */
+    public function testCallback(): void
+    {
+        $container = new Container();
+
+        $container->set($name = 'name', function () {
+            return new \stdClass();
+        });
+
+        self::assertNotNull($value = $container->get($name));
+        self::assertInstanceOf(\stdClass::class, $value);
+    }
+
+    /**
+     * @covers
+     */
     public function testNotFound(): void
     {
         $container = new Container();
