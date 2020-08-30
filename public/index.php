@@ -16,16 +16,13 @@ use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
 
 chdir(dirname(__DIR__));
 
-require './vendor/autoload.php';
+require 'vendor/autoload.php';
 
 ### Configuration
 
 $container = new Container();
 
-$container->set('config', [
-    'debug' => true,
-    'users' => ['admin' => 'password'],
-]);
+$container->set('config', require 'config/params.php');
 
 $container->set(Application::class, function (Container $container) {
     return new Application(
