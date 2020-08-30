@@ -20,8 +20,16 @@ class Container
 
                 if (($constructor = $reflection->getConstructor()) !== null) {
                     foreach ($constructor->getParameters() as $param) {
-                        $paramClass = $param->getClass();
-                        $args[] = $this->get($paramClass->getName());
+                        if ($paramClass = $param->getClass()) {
+                            $args[] = $this->get($paramClass->getName());
+                        } elseif ($param->isArray()) {
+                            $args[] = [];
+                        } else {
+                            if (!$param->isDefaultValueAvailable()) {
+                                throw new ServiceNotFoundException("Unable to resolve \"{$param->getName()}\" in service \"$id\"");
+                            }
+                            $args[] = $param->getDefaultValue();
+                        }
                     }
                 }
                 return $this->results[$id] = $reflection->newInstanceArgs($args);
