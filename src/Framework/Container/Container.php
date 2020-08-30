@@ -14,6 +14,9 @@ class Container
         }
 
         if (!array_key_exists($id, $this->definitions)) {
+            if (class_exists($id)) {
+                return $this->results[$id] = new $id();
+            }
             throw new ServiceNotFoundException("Undefined parameter \"$id\"");
         }
         $definition = $this->definitions[$id];
