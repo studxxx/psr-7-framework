@@ -2,8 +2,7 @@
 
 use Framework\Container\Container;
 
-$container = new Container();
+$container = new Container(require __DIR__ . '/dependencies.php');
 $container->set('config', require 'config/params.php');
-require 'config/dependencies.php';
 
 return $container;
