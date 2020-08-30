@@ -96,6 +96,43 @@ class ContainerTest extends TestCase
     /**
      * @covers
      */
+    public function testAutowiring(): void
+    {
+        $container = new Container();
+
+        $outer = $container->get(Outer::class);
+
+        self::assertNotNull($outer);
+        self::assertInstanceOf(Outer::class, $outer);
+
+        self::assertNotNull($middle = $outer->middle);
+        self::assertInstanceOf(Middle::class, $middle);
+
+        self::assertNotNull($inner = $middle->inner);
+        self::assertInstanceOf(Inner::class, $inner);
+    }
+
+    /**
+     * @covers
+     */
+    public function testAutowiringScalarWithDefault(): void
+    {
+        $container = new Container();
+
+        $scalar = $container->get(ScalarWithArrayAndDefault::class);
+
+        self::assertNotNull($scalar);
+
+        self::assertNotNull($inner = $scalar->inner);
+        self::assertInstanceOf(Inner::class, $inner);
+
+        self::assertEquals([], $scalar->array);
+        self::assertEquals(10, $scalar->default);
+    }
+
+    /**
+     * @covers
+     */
     public function testNotFound(): void
     {
         $container = new Container();
@@ -103,5 +140,43 @@ class ContainerTest extends TestCase
         $this->expectException(ServiceNotFoundException::class);
 
         $container->get('undefined_key');
+    }
+}
+
+class Outer
+{
+    public Middle $middle;
+
+    public function __construct(Middle $middle)
+    {
+        $this->middle = $middle;
+    }
+}
+
+class Middle
+{
+    public Inner $inner;
+
+    public function __construct(Inner $inner)
+    {
+        $this->inner = $inner;
+    }
+}
+
+class Inner
+{
+}
+
+class ScalarWithArrayAndDefault
+{
+    public Inner $inner;
+    public int $default;
+    public array $array;
+
+    public function __construct(Inner $inner, array $array, int $default = 10)
+    {
+        $this->inner = $inner;
+        $this->array = $array;
+        $this->default = $default;
     }
 }
