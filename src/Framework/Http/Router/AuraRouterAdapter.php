@@ -7,6 +7,7 @@ use Aura\Router\Route;
 use Aura\Router\RouterContainer;
 use Framework\Http\Router\Exception\RequestNotMatchedException;
 use Framework\Http\Router\Exception\RouteNotFoundException;
+use Framework\Http\Router\Route\RouteData;
 use Psr\Http\Message\ServerRequestInterface;
 
 class AuraRouterAdapter implements Router
@@ -38,17 +39,17 @@ class AuraRouterAdapter implements Router
         }
     }
 
-    public function addRoute(string $name, string $path, $handler, array $methods, array $options = []): void
+    public function addRoute(RouteData $data): void
     {
         $map = $this->aura->getMap();
 
         $route = new Route();
 
-        $route->name($name);
-        $route->path($path);
-        $route->handler($handler);
+        $route->name($data->name);
+        $route->path($data->path);
+        $route->handler($data->handler);
 
-        foreach ($options as $key => $value) {
+        foreach ($data->options as $key => $value) {
             switch ($key) {
                 case 'tokens':
                     $route->tokens($value);
@@ -60,12 +61,12 @@ class AuraRouterAdapter implements Router
                     $route->wildcard($value);
                     break;
                 default:
-                    throw new \InvalidArgumentException("Undefined option \"$name\"");
+                    throw new \InvalidArgumentException("Undefined option \"$key\"");
             }
         }
 
-        if ($methods) {
-            $route->allows($methods);
+        if ($data->methods) {
+            $route->allows($data->methods);
         }
         $map->addRoute($route);
     }
