@@ -36,4 +36,9 @@ class Container
         }
         $this->definitions[$id] = $value;
     }
+
+    public function has($id): bool
+    {
+        return class_exists($id);
+    }
 }
