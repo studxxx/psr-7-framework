@@ -30,6 +30,7 @@ $container->set('config', [
 $container->set(Application::class, function (Container $container) {
     return new Application(
         $container->get(MiddlewareResolver::class),
+        $container->get(Router::class),
         new Middleware\NotFoundHandler(),
         new Response()
     );
@@ -56,16 +57,7 @@ $container->set(DispatchMiddleware::class, function (Container $container) {
 });
 
 $container->set(Router::class, function () {
-    $aura = new RouterContainer();
-    $routes = $aura->getMap();
-
-    $routes->get('home', '/', Action\HelloAction::class);
-    $routes->get('about', '/about', Action\AboutAction::class);
-    $routes->get('blog', '/blog', Action\Blog\IndexAction::class);
-    $routes->get('blog_show', '/blog/{id}', Action\Blog\ShowAction::class)->tokens(['id' => '\d+']);
-    $routes->get('cabinet', '/cabinet', Action\CabinetAction::class);
-
-    return new AuraRouterAdapter($aura);
+    return new AuraRouterAdapter(new RouterContainer());
 });
 
 ### Initialization
@@ -79,6 +71,12 @@ $app->pipe(Middleware\ProfilerMiddleware::class);
 $app->pipe($container->get(RouteMiddleware::class));
 $app->pipe('cabinet', $container->get(Middleware\BasicAuthMiddleware::class));
 $app->pipe($container->get(DispatchMiddleware::class));
+
+$app->get('home', '/', Action\HelloAction::class);
+$app->get('about', '/about', Action\AboutAction::class);
+$app->get('blog', '/blog', Action\Blog\IndexAction::class);
+$app->get('blog_show', '/blog/{id}', Action\Blog\ShowAction::class, ['tokens' => ['id' => '\d+']]);
+$app->get('cabinet', '/cabinet', Action\CabinetAction::class);
 
 ### Running
 
