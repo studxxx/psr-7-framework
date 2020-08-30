@@ -2,7 +2,7 @@
 
 namespace Framework\Container;
 
-class Container
+class Container implements ContainerInterface
 {
     private array $definitions = [];
     private array $results = [];
