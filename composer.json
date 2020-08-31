@@ -11,8 +11,10 @@
         "psr/container": "^1.0@dev",
         "psr/http-message": "^1.0@dev",
         "roave/security-advisories": "dev-master",
+        "zendframework/zend-config-aggregator": "^1.2@dev",
         "zendframework/zend-diactoros": "^2.1@dev",
         "zendframework/zend-httphandlerrunner": "^1.1@dev",
+        "zendframework/zend-servicemanager": "4.0.x-dev",
         "zendframework/zend-stratigility": "2.1.2"
     },
     "license": "GNU GPL",
