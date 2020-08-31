@@ -30,9 +30,6 @@ return [
             MiddlewareResolver::class => function (ContainerInterface $container) {
                 return new MiddlewareResolver($container);
             },
-            Middleware\BasicAuthMiddleware::class => function (ContainerInterface $container) {
-                return new Middleware\BasicAuthMiddleware($container->get('config')['users'], new Response());
-            },
             Middleware\ErrorHandlerMiddleware::class => function (ContainerInterface $container) {
                 return new Middleware\ErrorHandlerMiddleware($container->get('config')['debug']);
             },
