@@ -4,6 +4,7 @@ namespace Framework\Http\Router;
 
 use Framework\Http\Router\Exception\RequestNotMatchedException;
 use Framework\Http\Router\Exception\RouteNotFoundException;
+use Framework\Http\Router\Route\RouteData;
 use Psr\Http\Message\ServerRequestInterface;
 
 interface Router
@@ -22,4 +23,9 @@ interface Router
      * @throws RouteNotFoundException
      */
     public function generate(string $name, array $params = []): string;
+
+    /**
+     * @param RouteData $data
+     */
+    public function addRoute(RouteData $data): void;
 }

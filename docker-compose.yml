@@ -1,0 +1,47 @@
+version: "3.7"
+services:
+  app:
+    build: docker/php-fpm
+    working_dir: /app
+    volumes:
+    - ./:/app
+    environment:
+      XDEBUG_CONFIG: "idekey=PHPSTORM remote_enable=1 remote_connect_back=1"
+      PHP_IDE_CONFIG: "serverName=docker"
+      TZ: America/New_York
+  nginx:
+    image: nginx:1.17-alpine
+    expose:
+    - 8000
+    ports:
+    - "8000:8000"
+    volumes:
+    - ./:/app
+    - ./docker/nginx/vhost.conf:/etc/nginx/conf.d/vhost.conf
+    depends_on:
+    - app
+    environment:
+      SERVICE_TAGS: "nginx"
+      TZ: America/New_York
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "33306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: psr7
+      MYSQL_USER: psr7
+      MYSQL_PASSWORD: secret
+#  appsetup:
+#    image: php:7.4-cli
+#    user: root
+#    working_dir: /app
+#    tty: true
+#    stdin_open: true
+#    command: /bin/bash -c "sleep 10 ; console/yii app/setup --interactive=0"
+#    expose:
+#    - 9000
+#    volumes:
+#    - ./:/app
+#    environment:
+#      TZ: America/New_York
