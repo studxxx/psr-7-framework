@@ -13,6 +13,7 @@
         "roave/security-advisories": "dev-master",
         "zendframework/zend-diactoros": "^2.1@dev",
         "zendframework/zend-httphandlerrunner": "^1.1@dev",
+        "zendframework/zend-servicemanager": "4.0.x-dev",
         "zendframework/zend-stratigility": "2.1.2"
     },
     "license": "GNU GPL",
