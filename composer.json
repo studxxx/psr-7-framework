@@ -8,6 +8,7 @@
         "ext-pdo": "*",
         "aura/router": "3.x-dev",
         "http-interop/http-middleware": "^0.5.0",
+        "psr/container": "^1.0@dev",
         "psr/http-message": "^1.0@dev",
         "roave/security-advisories": "dev-master",
         "zendframework/zend-diactoros": "^2.1@dev",
