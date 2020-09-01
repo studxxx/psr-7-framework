@@ -12,10 +12,12 @@ class HelloAction
     {
         $name = $request->getQueryParams()['name'] ?? 'Guest';
 
-        return new HtmlResponse($this->render('hello', $name));
+        return new HtmlResponse($this->render('hello', [
+            'name' => $name
+        ]));
     }
 
-    public function render($view, $name): string
+    public function render($view, array $params = []): string
     {
         ob_start();
         require 'templates/' . $view . '.php';
