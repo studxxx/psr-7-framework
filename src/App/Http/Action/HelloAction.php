@@ -12,13 +12,13 @@ class HelloAction
     {
         $name = $request->getQueryParams()['name'] ?? 'Guest';
 
-        return new HtmlResponse($this->render($name));
+        return new HtmlResponse($this->render('hello', $name));
     }
 
-    public function render($name): string
+    public function render($view, $name): string
     {
         ob_start();
-        require 'templates/hello.php';
+        require 'templates/' . $view . '.php';
 
         $html = ob_get_contents();
         ob_clean();
