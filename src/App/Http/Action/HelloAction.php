@@ -11,6 +11,9 @@ class HelloAction
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
         $name = $request->getQueryParams()['name'] ?? 'Guest';
-        return new HtmlResponse("Hello, $name!");
+
+        $html = require 'tepmlates/hello.php';
+
+        return new HtmlResponse($html);
     }
 }
