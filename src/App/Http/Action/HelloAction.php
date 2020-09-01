@@ -19,10 +19,11 @@ class HelloAction
 
     public function render($view, array $params = []): string
     {
+        $templateFile = 'templates/' . $view . '.php';
         extract($params, EXTR_OVERWRITE);
 
         ob_start();
-        require 'templates/' . $view . '.php';
+        require $templateFile;
 
         return ob_get_clean();
     }
