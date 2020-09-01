@@ -4,6 +4,7 @@ namespace Tests\App\Http\Action;
 
 use App\Http\Action\HelloAction;
 use PHPUnit\Framework\TestCase;
+use Template\TemplateRenderer;
 use Zend\Diactoros\ServerRequest;
 
 class HelloActionTest extends TestCase
@@ -13,13 +14,13 @@ class HelloActionTest extends TestCase
      */
     public function testGuest(): void
     {
-        $action = new HelloAction();
+        $action = new HelloAction(new TemplateRenderer('templates'));
 
         $request = new ServerRequest();
         $response = $action($request);
 
         self::assertEquals(200, $response->getStatusCode());
-        self::assertEquals('Hello, Guest!', $response->getBody()->getContents());
+        self::assertStringContainsString('Hello, Guest!', $response->getBody()->getContents());
     }
 
     /**
@@ -27,7 +28,7 @@ class HelloActionTest extends TestCase
      */
     public function testJohn(): void
     {
-        $action = new HelloAction();
+        $action = new HelloAction(new TemplateRenderer('templates'));
 
         $request = (new ServerRequest())
             ->withQueryParams(['name' => 'John']);
@@ -35,6 +36,6 @@ class HelloActionTest extends TestCase
         $response = $action($request);
 
         self::assertEquals(200, $response->getStatusCode());
-        self::assertEquals('Hello, John!', $response->getBody()->getContents());
+        self::assertStringContainsString('Hello, John!', $response->getBody()->getContents());
     }
 }
