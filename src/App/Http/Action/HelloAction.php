@@ -12,11 +12,16 @@ class HelloAction
     {
         $name = $request->getQueryParams()['name'] ?? 'Guest';
 
+        return new HtmlResponse($this->render($name));
+    }
+
+    public function render($name): string
+    {
         ob_start();
         require 'templates/hello.php';
 
         $html = ob_get_contents();
         ob_clean();
-        return new HtmlResponse($html);
+        return $html;
     }
 }
