@@ -9,12 +9,20 @@ use Zend\Diactoros\ServerRequest;
 
 class HelloActionTest extends TestCase
 {
+    private TemplateRenderer $renderer;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->renderer = new TemplateRenderer('templates');
+    }
+
     /**
      * @covers
      */
     public function testGuest(): void
     {
-        $action = new HelloAction(new TemplateRenderer('templates'));
+        $action = new HelloAction($this->renderer);
 
         $request = new ServerRequest();
         $response = $action($request);
@@ -28,7 +36,7 @@ class HelloActionTest extends TestCase
      */
     public function testJohn(): void
     {
-        $action = new HelloAction(new TemplateRenderer('templates'));
+        $action = new HelloAction($this->renderer);
 
         $request = (new ServerRequest())
             ->withQueryParams(['name' => 'John']);
