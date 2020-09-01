@@ -4,9 +4,16 @@ namespace Template;
 
 class TemplateRenderer
 {
+    private string $path;
+
+    public function __construct(string $path)
+    {
+        $this->path = $path;
+    }
+
     public function render($view, array $params = []): string
     {
-        $templateFile = 'templates/' . $view . '.php';
+        $templateFile = $this->path . '/' . $view . '.php';
 
         ob_start();
         extract($params, EXTR_OVERWRITE);
