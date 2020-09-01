@@ -19,6 +19,8 @@ class HelloAction
 
     public function render($view, array $params = []): string
     {
+        extract($params, EXTR_OVERWRITE);
+
         ob_start();
         require 'templates/' . $view . '.php';
 
