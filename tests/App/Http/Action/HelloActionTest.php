@@ -4,17 +4,17 @@ namespace Tests\App\Http\Action;
 
 use App\Http\Action\HelloAction;
 use PHPUnit\Framework\TestCase;
-use Template\TemplateRenderer;
+use Template\PhpRenderer;
 use Zend\Diactoros\ServerRequest;
 
 class HelloActionTest extends TestCase
 {
-    private TemplateRenderer $renderer;
+    private PhpRenderer $renderer;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->renderer = new TemplateRenderer('templates');
+        $this->renderer = new PhpRenderer('templates');
     }
 
     /**
