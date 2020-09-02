@@ -2,7 +2,7 @@
 /* @var string $name */
 
 $this->params['title'] = 'Cabinet';
-$this->extends = 'layout/default';
+$this->extends = 'layout/columns';
 ?>
 
 <div class="container">
