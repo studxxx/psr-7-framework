@@ -3,11 +3,13 @@
 /* @var \Template\PhpRenderer $this */
 
 $this->extend('layout/columns');
-$this->params['title'] = 'Cabinet'; ?>
+$this->params['title'] = 'Cabinet';
+?>
 
-<?php ob_start() ?>
+<?php $this->beginBlock() ?>
 
 <ul class="list-group mb-3">
+    <h6>Cabinet navigation</h6>
     <li class="list-group-item">
         <div>
             <h6 class="my-0">Cabinet</h6>
@@ -22,7 +24,7 @@ $this->params['title'] = 'Cabinet'; ?>
     </li>
 </ul>
 
-<?php $this->params['sidebar'] = ob_get_clean(); ?>
+<?php $this->endBlock('sidebar'); ?>
 
 <div class="container">
     <nav aria-label="breadcrumb">

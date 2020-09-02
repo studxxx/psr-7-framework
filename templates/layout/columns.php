@@ -10,6 +10,6 @@ $this->extend('layout/default');
         <?= $content ?>
     </div>
     <div class="col-md-3">
-        <?= $this->params['sidebar'] ?? '' ?>
+        <?= $this->renderBlock('sidebar') ?>
     </div>
 </div>

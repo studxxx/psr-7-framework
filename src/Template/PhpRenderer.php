@@ -7,6 +7,7 @@ class PhpRenderer implements TemplateRenderer
     private string $path;
     private array $params = [];
     private ?string $extend;
+    private ?array $blocks;
 
     public function __construct(string $path)
     {
@@ -37,5 +38,20 @@ class PhpRenderer implements TemplateRenderer
     public function extend($view): void
     {
         $this->extend = $view;
+    }
+
+    public function beginBlock(): void
+    {
+        ob_start();
+    }
+
+    public function endBlock(string $name): void
+    {
+        $this->blocks[$name] = ob_get_clean();
+    }
+
+    public function renderBlock(string $name): string
+    {
+        return $this->blocks[$name] ?? '';
     }
 }

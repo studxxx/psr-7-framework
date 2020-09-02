@@ -3,8 +3,28 @@
 /* @var \Template\PhpRenderer $this */
 
 $this->params['title'] = 'About';
-$this->extend('layout/default');
+$this->extend('layout/columns');
 ?>
+
+<?php $this->beginBlock() ?>
+
+<ul class="list-group mb-3">
+    <h6>Site navigation</h6>
+    <li class="list-group-item">
+        <div>
+            <h6 class="my-0">Cabinet navigation</h6>
+            <small class="text-muted">Cabinet description</small>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div>
+            <h6 class="my-0">Cabinet navigation</h6>
+            <small class="text-muted">Navigation description</small>
+        </div>
+    </li>
+</ul>
+
+<?php $this->endBlock('sidebar'); ?>
 
 <div class="container">
     <nav aria-label="breadcrumb">
