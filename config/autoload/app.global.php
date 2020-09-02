@@ -7,6 +7,7 @@ use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraRouterAdapter;
 use Framework\Http\Router\Router;
 use Psr\Container\ContainerInterface;
+use Template\TemplateRenderer;
 use Zend\Diactoros\Response;
 use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
@@ -32,6 +33,9 @@ return [
             },
             Middleware\ErrorHandlerMiddleware::class => function (ContainerInterface $container) {
                 return new Middleware\ErrorHandlerMiddleware($container->get('config')['debug']);
+            },
+            TemplateRenderer::class => function () {
+                return new TemplateRenderer('templates');
             },
         ],
     ],

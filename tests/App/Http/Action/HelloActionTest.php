@@ -4,37 +4,30 @@ namespace Tests\App\Http\Action;
 
 use App\Http\Action\HelloAction;
 use PHPUnit\Framework\TestCase;
+use Template\TemplateRenderer;
 use Zend\Diactoros\ServerRequest;
 
 class HelloActionTest extends TestCase
 {
-    /**
-     * @covers
-     */
-    public function testGuest(): void
+    private TemplateRenderer $renderer;
+
+    protected function setUp(): void
     {
-        $action = new HelloAction();
-
-        $request = new ServerRequest();
-        $response = $action($request);
-
-        self::assertEquals(200, $response->getStatusCode());
-        self::assertEquals('Hello, Guest!', $response->getBody()->getContents());
+        parent::setUp();
+        $this->renderer = new TemplateRenderer('templates');
     }
 
     /**
      * @covers
      */
-    public function testJohn(): void
+    public function testGuest(): void
     {
-        $action = new HelloAction();
+        $action = new HelloAction($this->renderer);
 
-        $request = (new ServerRequest())
-            ->withQueryParams(['name' => 'John']);
-
+        $request = new ServerRequest();
         $response = $action($request);
 
         self::assertEquals(200, $response->getStatusCode());
-        self::assertEquals('Hello, John!', $response->getBody()->getContents());
+        self::assertStringContainsString('Hello!', $response->getBody()->getContents());
     }
 }
