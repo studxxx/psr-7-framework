@@ -1,4 +1,4 @@
-<?php /* @var string $name */ ?>
+<?php /* @var string $content */ ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -45,35 +45,34 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item"><a class="nav-link fa fa-book" href="/about"> About</a></li>
-            <li class="nav-item"><a class="nav-link fa fa-user" href="/cabinet"> Cabinet</a></li>
+            <li class="nav-item active"><a class="nav-link fa fa-user" href="/cabinet"> Cabinet</a></li>
         </ul>
     </div>
 </nav>
 
-<main role="main">
-    <div class="jumbotron">
-        <div class="container">
-            <h1 class="display-3">Hello!</h1>
-            <p>Congratulations! You have successfully created your application.</p>
-        </div>
+<main role="main" class="app-content">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Cabinet</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="container">
+        <h1>Cabinet of <?= htmlspecialchars($content, ENT_QUOTES | ENT_SUBSTITUTE) ?>!</h1>
     </div>
 </main>
 
 <footer class="app-footer">
     <div class="container">
         <hr>
-        <p>&copy; My App <?= date('Y') ?></p>
+        <p>&copy; Company <?= date('Y') ?></p>
     </div>
 </footer>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"
-        integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf"
         crossorigin="anonymous"></script>
 </body>
 </html>

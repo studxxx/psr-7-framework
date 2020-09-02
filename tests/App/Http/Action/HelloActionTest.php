@@ -28,22 +28,6 @@ class HelloActionTest extends TestCase
         $response = $action($request);
 
         self::assertEquals(200, $response->getStatusCode());
-        self::assertStringContainsString('Hello, Guest!', $response->getBody()->getContents());
-    }
-
-    /**
-     * @covers
-     */
-    public function testJohn(): void
-    {
-        $action = new HelloAction($this->renderer);
-
-        $request = (new ServerRequest())
-            ->withQueryParams(['name' => 'John']);
-
-        $response = $action($request);
-
-        self::assertEquals(200, $response->getStatusCode());
-        self::assertStringContainsString('Hello, John!', $response->getBody()->getContents());
+        self::assertStringContainsString('Hello!', $response->getBody()->getContents());
     }
 }
