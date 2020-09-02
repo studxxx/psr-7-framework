@@ -2,7 +2,7 @@
 /* @var string $content */
 
 $this->params['title'] = 'About';
-$this->extends = 'layout/default';
+$this->extend = 'layout/default';
 ?>
 
 <div class="container">

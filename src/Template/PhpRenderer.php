@@ -6,7 +6,7 @@ class PhpRenderer implements TemplateRenderer
 {
     private string $path;
     private array $params = [];
-    private ?string $extends;
+    private ?string $extend;
 
     public function __construct(string $path)
     {
@@ -19,17 +19,17 @@ class PhpRenderer implements TemplateRenderer
 
         ob_start();
         extract($params, EXTR_OVERWRITE);
-        $this->extends = null;
+        $this->extend = null;
 
         require $templateFile;
 
         $content = ob_get_clean();
 
-        if ($this->extends === null) {
+        if ($this->extend === null) {
             return $content;
         }
 
-        return $this->render($this->extends, [
+        return $this->render($this->extend, [
             'content' => $content,
         ]);
     }

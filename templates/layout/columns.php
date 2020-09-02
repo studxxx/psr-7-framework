@@ -1,7 +1,7 @@
 <?php
 /* @var string $content */
 
-$this->extends = 'layout/default';
+$this->extend = 'layout/default';
 ?>
 
 <div class="row">

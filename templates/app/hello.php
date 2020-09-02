@@ -1,6 +1,6 @@
 <?php
 $this->params['title'] = 'Hello';
-$this->extends = 'layout/default';
+$this->extend = 'layout/default';
 ?>
 
 <div class="jumbotron">
