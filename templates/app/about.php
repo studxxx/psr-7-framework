@@ -1,5 +1,4 @@
 <?php
-/* @var string $content */
 /* @var \Template\PhpRenderer $this */
 
 $this->extend('layout/default');
@@ -20,7 +19,9 @@ $this->extend('layout/default');
 </nav>
 <?php $this->endBlock(); ?>
 
+<?php $this->beginBlock('content'); ?>
 <div class="container">
     <h1>About</h1>
     <p><?= htmlspecialchars($content, ENT_QUOTES | ENT_SUBSTITUTE) ?>!</p>
 </div>
+<?php $this->endBlock(); ?>

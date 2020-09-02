@@ -7,7 +7,7 @@ class PhpRenderer implements TemplateRenderer
     private string $path;
     private ?string $extend;
     private ?array $blocks;
-    private $blockNames;
+    private \SplStack $blockNames;
 
     public function __construct(string $path)
     {
@@ -31,9 +31,7 @@ class PhpRenderer implements TemplateRenderer
             return $content;
         }
 
-        return $this->render($this->extend, [
-            'content' => $content,
-        ]);
+        return $this->render($this->extend);
     }
 
     public function extend($view): void

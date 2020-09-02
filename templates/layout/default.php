@@ -1,5 +1,4 @@
 <?php
-/* @var string $content */
 /* @var \Template\PhpRenderer $this */
 ?>
 <!doctype html>
@@ -56,7 +55,7 @@
 
 <main role="main" class="app-content">
     <?= $this->renderBlock('breadcrumbs') ?>
-    <?= $content ?>
+    <?= $this->renderBlock('content') ?>
 </main>
 
 <footer class="app-footer">
