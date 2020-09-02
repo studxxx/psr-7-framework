@@ -16,7 +16,7 @@ $this->extend('layout/columns');
 </nav>
 <?php $this->endBlock(); ?>
 
-<?php $this->beginBlock('content'); ?>
+<?php $this->beginBlock('main'); ?>
 <div class="container">
     <h1>Cabinet of <?= htmlspecialchars($name, ENT_QUOTES | ENT_SUBSTITUTE) ?>!</h1>
 </div>
