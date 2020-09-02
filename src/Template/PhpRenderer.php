@@ -6,7 +6,7 @@ class PhpRenderer implements TemplateRenderer
 {
     private string $path;
     private ?string $extend;
-    private ?array $blocks;
+    private array $blocks = [];
     private \SplStack $blockNames;
 
     public function __construct(string $path)
@@ -37,6 +37,15 @@ class PhpRenderer implements TemplateRenderer
     public function extend($view): void
     {
         $this->extend = $view;
+    }
+
+    public function ensureBlock(string $name): bool
+    {
+        if ($this->hasBlock($name)) {
+            return false;
+        }
+        $this->beginBlock($name);
+        return true;
     }
 
     public function beginBlock(string $name): void

@@ -9,8 +9,7 @@ $this->extend('layout/default');
         <?= $this->renderBlock('main') ?>
     </div>
     <div class="col-md-3">
-        <?php if (!$this->hasBlock('sidebar')) : ?>
-        <?php $this->beginBlock('sidebar') ?>
+        <?php if ($this->ensureBlock('sidebar')) : ?>
             <ul class="list-group mb-3">
                 <h6>Site navigation</h6>
                 <li class="list-group-item">
@@ -20,8 +19,7 @@ $this->extend('layout/default');
                     </div>
                 </li>
             </ul>
-        <?php $this->endBlock() ?>
-        <?php endif; ?>
+        <?php $this->endBlock(); endif; ?>
         <?= $this->renderBlock('sidebar') ?>
     </div>
 </div>
