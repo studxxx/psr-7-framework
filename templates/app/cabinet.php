@@ -6,7 +6,7 @@ $this->extend('layout/columns');
 $this->params['title'] = 'Cabinet';
 ?>
 
-<?php $this->beginBlock() ?>
+<?php $this->beginBlock('sidebar') ?>
 
 <ul class="list-group mb-3">
     <h6>Cabinet navigation</h6>
@@ -24,7 +24,7 @@ $this->params['title'] = 'Cabinet';
     </li>
 </ul>
 
-<?php $this->endBlock('sidebar'); ?>
+<?php $this->endBlock(); ?>
 
 <div class="container">
     <nav aria-label="breadcrumb">
