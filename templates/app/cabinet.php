@@ -1,8 +1,9 @@
 <?php
 /* @var string $name */
+/* @var \Template\PhpRenderer $this */
 
 $this->params['title'] = 'Cabinet';
-$this->extend = 'layout/columns';
+$this->extend('layout/columns');
 ?>
 
 <div class="container">

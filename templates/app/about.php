@@ -1,8 +1,9 @@
 <?php
 /* @var string $content */
+/* @var \Template\PhpRenderer $this */
 
 $this->params['title'] = 'About';
-$this->extend = 'layout/default';
+$this->extend('layout/default');
 ?>
 
 <div class="container">

@@ -1,7 +1,8 @@
 <?php
 /* @var string $content */
+/* @var \Template\PhpRenderer $this */
 
-$this->extend = 'layout/default';
+$this->extend('layout/default');
 ?>
 
 <div class="row">

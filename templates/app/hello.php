@@ -1,6 +1,8 @@
 <?php
+/* @var \Template\PhpRenderer $this */
+
 $this->params['title'] = 'Hello';
-$this->extend = 'layout/default';
+$this->extend('layout/default');
 ?>
 
 <div class="jumbotron">
