@@ -3,28 +3,8 @@
 /* @var \Template\PhpRenderer $this */
 
 $this->params['title'] = 'About';
-$this->extend('layout/columns');
+$this->extend('layout/default');
 ?>
-
-<?php $this->beginBlock('sidebar') ?>
-
-<ul class="list-group mb-3">
-    <h6>Site navigation</h6>
-    <li class="list-group-item">
-        <div>
-            <h6 class="my-0">Cabinet navigation</h6>
-            <small class="text-muted">Cabinet description</small>
-        </div>
-    </li>
-    <li class="list-group-item">
-        <div>
-            <h6 class="my-0">Cabinet navigation</h6>
-            <small class="text-muted">Navigation description</small>
-        </div>
-    </li>
-</ul>
-
-<?php $this->endBlock(); ?>
 
 <div class="container">
     <nav aria-label="breadcrumb">
@@ -37,4 +17,4 @@ $this->extend('layout/columns');
 <div class="container">
     <h1>About</h1>
     <p><?= htmlspecialchars($content, ENT_QUOTES | ENT_SUBSTITUTE) ?>!</p>
-</div>`
+</div>
