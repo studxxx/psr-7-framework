@@ -1,9 +1,13 @@
-<?php /* @var string $content */ ?>
+<?php
+/* @var string $content */
+/* @var \Template\PhpRenderer $this */
+?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <?= $this->renderBlock('meta') ?>
     <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
     <title><?= $this->params['title'] ?> - App</title>
     <!-- Bootstrap core CSS -->
@@ -51,6 +55,7 @@
 </nav>
 
 <main role="main" class="app-content">
+    <?= $this->renderBlock('breadcrumbs') ?>
     <?= $content ?>
 </main>
 
