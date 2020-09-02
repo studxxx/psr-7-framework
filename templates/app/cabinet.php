@@ -3,22 +3,26 @@
 /* @var \Template\PhpRenderer $this */
 
 $this->extend('layout/columns');
-$this->params['title'] = 'Cabinet';
-$this->params['sidebar'] = '<ul class="list-group mb-3">
-            <li class="list-group-item">
-                <div>
-                    <h6 class="my-0">Cabinet</h6>
-                    <small class="text-muted">Cabinet description</small>
-                </div>
-            </li>
-            <li class="list-group-item">
-                <div>
-                    <h6 class="my-0">Cabinet navigation</h6>
-                    <small class="text-muted">Navigation description</small>
-                </div>
-            </li>
-        </ul>';
-?>
+$this->params['title'] = 'Cabinet'; ?>
+
+<?php ob_start() ?>
+
+<ul class="list-group mb-3">
+    <li class="list-group-item">
+        <div>
+            <h6 class="my-0">Cabinet</h6>
+            <small class="text-muted">Cabinet description</small>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div>
+            <h6 class="my-0">Cabinet navigation</h6>
+            <small class="text-muted">Navigation description</small>
+        </div>
+    </li>
+</ul>
+
+<?php $this->params['sidebar'] = ob_get_clean(); ?>
 
 <div class="container">
     <nav aria-label="breadcrumb">
