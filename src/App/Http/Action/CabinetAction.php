@@ -19,7 +19,7 @@ class CabinetAction
     public function __invoke(ServerRequestInterface $request)
     {
         return new HtmlResponse($this->template->render('cabinet', [
-            'content' => $request->getAttribute(BasicAuthMiddleware::ATTRIBUTE)
+            'name' => $request->getAttribute(BasicAuthMiddleware::ATTRIBUTE)
         ]));
     }
 }

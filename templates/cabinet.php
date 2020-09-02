@@ -1,4 +1,4 @@
-<?php /* @var string $content */ ?>
+<?php /* @var string $name */ ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -60,7 +60,7 @@
         </nav>
     </div>
     <div class="container">
-        <h1>Cabinet of <?= htmlspecialchars($content, ENT_QUOTES | ENT_SUBSTITUTE) ?>!</h1>
+        <h1>Cabinet of <?= htmlspecialchars($name, ENT_QUOTES | ENT_SUBSTITUTE) ?>!</h1>
     </div>
 </main>
 
