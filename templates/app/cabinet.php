@@ -3,8 +3,9 @@
 /* @var \Template\PhpRenderer $this */
 
 $this->extend('layout/columns');
-$this->params['title'] = 'Cabinet';
 ?>
+
+<?php $this->beginBlock('title') ?>Cabinet<?php $this->endBlock(); ?>
 
 <?php $this->beginBlock('sidebar') ?>
 

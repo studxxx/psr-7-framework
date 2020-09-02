@@ -2,9 +2,11 @@
 /* @var string $content */
 /* @var \Template\PhpRenderer $this */
 
-$this->params['title'] = 'About';
 $this->extend('layout/default');
 ?>
+
+<?php $this->beginBlock('title') ?>About<?php $this->endBlock(); ?>
+
 <?php $this->beginBlock('meta');?>
 <meta name="description" content="About psr framework">
 <?php $this->endBlock() ?>

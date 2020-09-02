@@ -1,9 +1,10 @@
 <?php
 /* @var \Template\PhpRenderer $this */
 
-$this->params['title'] = 'Hello';
 $this->extend('layout/default');
 ?>
+
+<?php $this->beginBlock('title') ?>Hello<?php $this->endBlock(); ?>
 
 <?php $this->beginBlock('meta');?>
 <meta name="description" content="Home page description">

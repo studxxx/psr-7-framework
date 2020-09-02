@@ -5,7 +5,6 @@ namespace Template;
 class PhpRenderer implements TemplateRenderer
 {
     private string $path;
-    private array $params = [];
     private ?string $extend;
     private ?array $blocks;
     private $blockNames;
