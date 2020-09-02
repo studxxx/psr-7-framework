@@ -9,7 +9,7 @@ $this->extend('layout/default');
         <?= $this->renderBlock('main') ?>
     </div>
     <div class="col-md-3">
-        <?php if ($this->ensureBlock('sidebar')) : ?>
+        <?php $this->block('sidebar', function () { ob_start(); ?>
             <ul class="list-group mb-3">
                 <h6>Site navigation</h6>
                 <li class="list-group-item">
@@ -19,7 +19,7 @@ $this->extend('layout/default');
                     </div>
                 </li>
             </ul>
-        <?php $this->endBlock(); endif; ?>
+        <?php return ob_get_clean(); }); ?>
         <?= $this->renderBlock('sidebar') ?>
     </div>
 </div>
