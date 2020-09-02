@@ -17,7 +17,7 @@ class AboutAction
 
     public function __invoke(): ResponseInterface
     {
-        return new HtmlResponse($this->template->render('about', [
+        return new HtmlResponse($this->template->render('app/about', [
             'content' => 'I am a simple site.',
         ]));
     }

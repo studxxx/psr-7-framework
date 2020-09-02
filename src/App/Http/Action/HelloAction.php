@@ -20,6 +20,6 @@ class HelloAction
     {
         $name = $request->getQueryParams()['name'] ?? 'Guest';
 
-        return new HtmlResponse($this->template->render('hello'));
+        return new HtmlResponse($this->template->render('app/hello'));
     }
 }
