@@ -1,5 +1,6 @@
 <?php
 /* @var \Template\PhpRenderer $this */
+/* @var string $content */
 
 $this->extend('layout/default');
 ?>
