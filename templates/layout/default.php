@@ -47,6 +47,7 @@
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link fa fa-book" href="<?= $this->encode($this->path('blog')) ?>"> Blog</a></li>
             <li class="nav-item"><a class="nav-link fa fa-book" href="<?= $this->encode($this->path('about')) ?>"> About</a></li>
             <li class="nav-item"><a class="nav-link fa fa-user" href="<?= $this->encode($this->path('cabinet')) ?>"> Cabinet</a></li>
         </ul>

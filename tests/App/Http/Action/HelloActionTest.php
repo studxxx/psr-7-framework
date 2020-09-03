@@ -3,6 +3,7 @@
 namespace Tests\App\Http\Action;
 
 use App\Http\Action\HelloAction;
+use Framework\Http\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Template\PhpRenderer;
 use Zend\Diactoros\ServerRequest;
@@ -14,7 +15,8 @@ class HelloActionTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->renderer = new PhpRenderer('templates');
+        $router = $this->createMock(Router::class);
+        $this->renderer = new PhpRenderer('templates', $router);
     }
 
     /**
