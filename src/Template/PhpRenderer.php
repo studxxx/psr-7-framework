@@ -86,4 +86,9 @@ class PhpRenderer implements TemplateRenderer
     {
         return array_key_exists($name, $this->blocks);
     }
+
+    public function encode(string $name): string
+    {
+        return \htmlspecialchars($name, ENT_QUOTES | ENT_SUBSTITUTE);
+    }
 }

@@ -18,7 +18,7 @@ $this->extend('layout/columns');
 
 <?php $this->beginBlock('main') ?>
 <div class="container">
-    <h1>Cabinet of <?= htmlspecialchars($name, ENT_QUOTES | ENT_SUBSTITUTE) ?>!</h1>
+    <h1>Cabinet of <?= $this->encode($name) ?></h1>
 </div>
 <?php $this->endBlock() ?>
 
