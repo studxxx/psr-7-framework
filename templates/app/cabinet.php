@@ -5,7 +5,7 @@
 $this->extend('layout/columns');
 ?>
 
-<?php $this->beginBlock('title') ?>Cabinet<?php $this->endBlock(); ?>
+<?php $this->beginBlock('title') ?>Cabinet<?php $this->endBlock() ?>
 
 <?php $this->beginBlock('breadcrumbs'); ?>
 <nav aria-label="breadcrumb">
@@ -14,13 +14,13 @@ $this->extend('layout/columns');
         <li class="breadcrumb-item active" aria-current="page">Cabinet</li>
     </ol>
 </nav>
-<?php $this->endBlock(); ?>
+<?php $this->endBlock() ?>
 
-<?php $this->beginBlock('main'); ?>
+<?php $this->beginBlock('main') ?>
 <div class="container">
     <h1>Cabinet of <?= htmlspecialchars($name, ENT_QUOTES | ENT_SUBSTITUTE) ?>!</h1>
 </div>
-<?php $this->endBlock(); ?>
+<?php $this->endBlock() ?>
 
 <?php $this->beginBlock('sidebar') ?>
 <ul class="list-group mb-3">

@@ -75,7 +75,7 @@ class PhpRenderer implements TemplateRenderer
 
     public function renderBlock(string $name): string
     {
-        $block = $this->blocks[$name] ?? '';
+        $block = $this->blocks[$name] ?? null;
         if ($block instanceof \Closure) {
             return $block();
         }
