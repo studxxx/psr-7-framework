@@ -33,7 +33,7 @@
 <body>
 
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="<?=$this->path('home') ?>">Application</a>
+    <a class="navbar-brand" href="<?= $this->encode($this->path('home')) ?>">Application</a>
     <button class="navbar-toggler"
             type="button"
             data-toggle="collapse"
@@ -47,8 +47,8 @@
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item"><a class="nav-link fa fa-book" href="<?=$this->path('about') ?>"> About</a></li>
-            <li class="nav-item"><a class="nav-link fa fa-user" href="<?=$this->path('cabinet') ?>"> Cabinet</a></li>
+            <li class="nav-item"><a class="nav-link fa fa-book" href="<?= $this->encode($this->path('about')) ?>"> About</a></li>
+            <li class="nav-item"><a class="nav-link fa fa-user" href="<?= $this->encode($this->path('cabinet')) ?>"> Cabinet</a></li>
         </ul>
     </div>
 </nav>
