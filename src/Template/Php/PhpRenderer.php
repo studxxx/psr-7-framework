@@ -27,9 +27,14 @@ class PhpRenderer implements TemplateRenderer
     public function __call($name, $arguments)
     {
         foreach ($this->extensions as $extension) {
-            foreach ($extension->getFunctions() as $key => $function) {
-                if ($key === $name) {
-                    return $function(...$arguments);
+            $functions = $extension->getFunctions();
+            foreach ($functions as $function) {
+                /** @var SimpleFunction $function */
+                if ($function->name === $name) {
+                    if ($function->needRenderer) {
+                        return ($function->callback)($this, ...$arguments);
+                    }
+                    return ($function->callback)(...$arguments);
                 }
             }
         }
