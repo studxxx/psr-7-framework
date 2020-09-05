@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+    <title>Error</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+<main role="main" class="app-content">
+    <div class="container">
+        <h1>Exception: {{ e.getMessage() }}</h1>
+        <p>Code: {{ e.getCode() }}</p>
+        {% for trace in e.getTrace() %}
+            <p>{{ trace.file }} on line {{ trace.line }}</p>
+        {% endfor %}
+    </div>
+</main>
+</body>
+</html>
