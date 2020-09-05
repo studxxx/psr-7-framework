@@ -39,7 +39,9 @@ return [
                 );
             },
             TemplateRenderer::class => function (ContainerInterface $container) {
-                return new PhpRenderer('templates', $container->get(Router::class));
+                $renderer = new PhpRenderer('templates');
+                $renderer->addExtension($container->get(\Template\Php\Extension\RouteExtension::class));
+                return $renderer;
             },
         ],
     ],
