@@ -41,19 +41,20 @@ return [
                 );
             },
             TemplateRenderer::class => function (ContainerInterface $container) {
-                return new TwigRenderer($container->get(Twig\Environment::class), '.html.twig');
+                return new TwigRenderer(
+                    $container->get(Twig\Environment::class),
+                    $container->get('config')['templates']['extension']
+                );
             },
             Twig\Environment::class => function (ContainerInterface $container) {
 
-                $templateDir = 'templates';
-                $cacheDir = 'var/cache/twig';
                 $debug = $container->get('config')['debug'];
 
                 $loader = new FilesystemLoader();
-                $loader->addPath($templateDir);
+                $loader->addPath($container->get('config')['twig']['template_dir']);
 
                 $twig = new Twig\Environment($loader, [
-                    'cache' => $debug ? false : $cacheDir,
+                    'cache' => $debug ? false : $container->get('config')['twig']['cache_dir'],
                     'debug' => $debug,
                     'auto_reload' => $debug,
                     'strict_variables' => $debug,
@@ -63,9 +64,23 @@ return [
                     $twig->addExtension(new Twig\Extension\DebugExtension());
                 }
                 $twig->addExtension($container->get(RouteExtension::class));
+
+                foreach ($container->get('config')['twig']['extensions'] as $extension) {
+                    $twig->addExtension($container->get($extension));
+                }
                 return $twig;
             },
         ],
     ],
     'debug' => false,
+    'templates' => [
+        'extension' => '.html.twig'
+    ],
+    'twig' => [
+        'template_dir' => 'templates',
+        'cache_dir' => 'var/cache/twig',
+        'extensions' => [
+            // Put extension here like RouteExtension::class,
+        ],
+    ]
 ];
