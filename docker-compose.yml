@@ -6,7 +6,7 @@ services:
     volumes:
     - ./:/app
     environment:
-      XDEBUG_CONFIG: "idekey=PHPSTORM remote_enable=1 remote_connect_back=1"
+      XDEBUG_CONFIG: "idekey=PHPSTORM remote_enable=1 remote_connect_back=1 remote_host=10.254.254.254"
       PHP_IDE_CONFIG: "serverName=docker"
       TZ: America/New_York
   nginx:

@@ -242,5 +242,156 @@ $container = new \Zend\ServiceManager\ServiceManager([
 ]);
 ```
 
+### PhpRenderer
+
+```php
+<?php
+
+use Framework\Http\Application;
+use Framework\Http\Router\Router;
+use Template\Php\PhpRenderer;
+
+chdir(dirname(__DIR__));
+
+require 'vendor/autoload.php';
+
+$container = require 'config/container.php';
+$app = $container->get(Application::class);
+require 'config/pipeline.php';
+require 'config/routes.php';
+/** @var Router $router */
+$router = $container->get(Router::class);
+
+class PathFunction
+{
+    private Router $router;
+
+    public function __construct(Router $router)
+    {
+        $this->router = $router;
+    }
+
+    public function __invoke($name, array $params = []): string
+    {
+        return $this->router->generate($name, $params);
+    }
+}
+
+$renderer = new PhpRenderer('templates', $router, [
+    'pathUrl' => $container->get(PathFunction::class),
+]);
+
+$html = $renderer->render('app/hello');
+
+echo $html . PHP_EOL;
+```
+
+```php
+<?php
+
+use Framework\Http\Application;
+use Framework\Http\Router\Router;
+use Template\Php\PhpRenderer;
+
+chdir(dirname(__DIR__));
+
+require 'vendor/autoload.php';
+/** @var \Psr\Container\ContainerInterface $container */
+$container = require 'config/container.php';
+$app = $container->get(Application::class);
+require 'config/pipeline.php';
+require 'config/routes.php';
+/** @var Router $router */
+$router = $container->get(Router::class);
+class Extension
+{
+    public function getFunctions(): array
+    {
+        return [];
+    }
+
+    public function getFilters(): array
+    {
+        return [];
+    }
+}
+
+class Template\Php\Extension\RouteExtension extends Extension
+{
+    private Router $router;
+
+    public function __construct(Router $router)
+    {
+        $this->router = $router;
+    }
+
+    public function getFunctions(): array
+    {
+        return [
+            'pathUrl' => [$this, 'generatePathUrl'],
+        ];
+    }
+
+    public function getFit(): array
+    {
+        return [
+            'pathUrl' => [$this, 'generatePathUrl'],
+        ];
+    }
+
+    public function generatePathUrl($name, array $params = []): string
+    {
+        return $this->router->generate($name, $params);
+    }
+}
+
+$renderer = new PhpRenderer('templates', $router);
+
+$renderer->addFunction($container->get(Template\Php\Extension\RouteExtension::class));
+
+$html = $renderer->render('app/hello');
+
+echo $html . PHP_EOL;
+```
+
+### Config xdebug
+
+#### docker-compose.yml
+> set into php-fpm service
+```
+XDEBUG_CONFIG: "idekey=PHPSTORM remote_enable=1 remote_connect_back=1 remote_host=10.254.254.254"
+```
+
+#### php.ini
+```
+xdebug.remote_host=10.254.254.254
+```
+launch in bash
+```shell script
+sudo ip addr add 10.254.254.254/24 brd + dev wlp4s0 label wlp4s0:1
+```
+> wlp4s0 - network name from ifconfig or `enp2s0`
+
+it looks like
+```
+enp2s0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.0.85  netmask 255.255.255.0  broadcast 192.168.0.255
+        inet6 fe80::2387:a0b4:efce:bc47  prefixlen 64  scopeid 0x20<link>
+        ether 9c:5c:8e:97:7a:df  txqueuelen 1000  (Ethernet)
+        RX packets 85555648  bytes 62443042382 (62.4 GB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 107389361  bytes 129014095923 (129.0 GB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+enp2s0:1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.254.254.254  netmask 255.255.255.0  broadcast 10.254.254.255
+        ether 9c:5c:8e:97:7a:df  txqueuelen 1000  (Ethernet)
+```
+#### Articles about configuring xdebug
+[How to setup Docker + PhpStorm + xdebug](https://stackoverflow.com/questions/46263043/how-to-setup-docker-phpstorm-xdebug-on-ubuntu-16-04/46265103#46265103)
+[Configure Xdebug in PHP-FPM Docker container](https://stackoverflow.com/questions/48026670/configure-xdebug-in-php-fpm-docker-container)
+[Can't connect PhpStorm with xdebug with Docker](https://stackoverflow.com/questions/47284905/cant-connect-phpstorm-with-xdebug-with-docker/47450391#47450391)
+[xdebug-phpstorm-docker](https://stackoverflow.com/questions/tagged/xdebug+phpstorm+docker)
+[Docker + php-fpm + PhpStorm + Xdebug](https://habr.com/ru/post/473184/)
 [CHANGELOG]: ./CHANGELOG.md
-[version-badge]: https://img.shields.io/badge/version-0.0.3-blue.svg
+[version-badge]: https://img.shields.io/badge/version-0.0.5-blue.svg

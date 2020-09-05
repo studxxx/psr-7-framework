@@ -7,6 +7,8 @@ use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraRouterAdapter;
 use Framework\Http\Router\Router;
 use Psr\Container\ContainerInterface;
+use Template\Php\PhpRenderer;
+use Template\TemplateRenderer;
 use Zend\Diactoros\Response;
 use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
@@ -20,7 +22,7 @@ return [
                 return new Application(
                     $container->get(MiddlewareResolver::class),
                     $container->get(Router::class),
-                    new Middleware\NotFoundHandler(),
+                    new Middleware\NotFoundHandler($container->get(TemplateRenderer::class)),
                     new Response()
                 );
             },
@@ -31,7 +33,15 @@ return [
                 return new MiddlewareResolver($container);
             },
             Middleware\ErrorHandlerMiddleware::class => function (ContainerInterface $container) {
-                return new Middleware\ErrorHandlerMiddleware($container->get('config')['debug']);
+                return new Middleware\ErrorHandlerMiddleware(
+                    $container->get('config')['debug'],
+                    $container->get(TemplateRenderer::class)
+                );
+            },
+            TemplateRenderer::class => function (ContainerInterface $container) {
+                $renderer = new PhpRenderer('templates');
+                $renderer->addExtension($container->get(\Template\Php\Extension\RouteExtension::class));
+                return $renderer;
             },
         ],
     ],
