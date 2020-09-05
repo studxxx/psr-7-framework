@@ -394,4 +394,4 @@ enp2s0:1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
 [xdebug-phpstorm-docker](https://stackoverflow.com/questions/tagged/xdebug+phpstorm+docker)
 [Docker + php-fpm + PhpStorm + Xdebug](https://habr.com/ru/post/473184/)
 [CHANGELOG]: ./CHANGELOG.md
-[version-badge]: https://img.shields.io/badge/version-0.0.5-blue.svg
+[version-badge]: https://img.shields.io/badge/version-0.0.6-blue.svg

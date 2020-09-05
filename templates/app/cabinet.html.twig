@@ -1,28 +1,23 @@
-<?php
-/* @var string $name */
-/* @var \Template\Php\PhpRenderer $this */
+{% extends 'layout/columns.html.twig' %}
 
-$this->extend('layout/columns');
-?>
+{% block title %}Cabinet{% endblock %}
 
-<?php $this->beginBlock('title') ?>Cabinet<?php $this->endBlock() ?>
-
-<?php $this->beginBlock('breadcrumbs'); ?>
+{% block breadcrumbs %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="<?= $this->encode($this->path('home')) ?>">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page">Cabinet</li>
     </ol>
 </nav>
-<?php $this->endBlock() ?>
+{% endblock %}
 
-<?php $this->beginBlock('main') ?>
+{% block main %}
 <div class="container">
-    <h1>Cabinet of <?= $this->encode($name) ?></h1>
+    <h1>Cabinet of {{ name }}</h1>
 </div>
-<?php $this->endBlock() ?>
+{% endblock %}
 
-<?php $this->beginBlock('sidebar') ?>
+{% block sidebar %}
 <ul class="list-group mb-3">
     <h6>Cabinet navigation</h6>
     <li class="list-group-item">
@@ -38,4 +33,4 @@ $this->extend('layout/columns');
         </div>
     </li>
 </ul>
-<?php $this->endBlock(); ?>
+{% endblock %}

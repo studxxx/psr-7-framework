@@ -1,0 +1,18 @@
+{% extends 'layout/default.html.twig' %}
+
+{% block title %}500 - Server error{% endblock %}
+
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Error</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>500 - Server error</h1>
+</div>
+{% endblock %}
