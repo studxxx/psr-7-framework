@@ -4,6 +4,7 @@
 $this->extend('layout/default');
 ?>
 
+<?php $this->beginBlock('content'); ?>
 <div class="row">
     <div class="col-md-9">
         <?= $this->renderBlock('main') ?>
@@ -23,3 +24,4 @@ $this->extend('layout/default');
         <?= $this->renderBlock('sidebar') ?>
     </div>
 </div>
+<?php $this->endBlock(); ?>
