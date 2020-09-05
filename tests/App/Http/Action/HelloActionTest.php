@@ -5,7 +5,7 @@ namespace Tests\App\Http\Action;
 use App\Http\Action\HelloAction;
 use Framework\Http\Router\Router;
 use PHPUnit\Framework\TestCase;
-use Template\PhpRenderer;
+use Template\Php\PhpRenderer;
 use Zend\Diactoros\ServerRequest;
 
 class HelloActionTest extends TestCase

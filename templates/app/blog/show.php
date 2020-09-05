@@ -1,5 +1,5 @@
 <?php
-/* @var \Template\PhpRenderer $this */
+/* @var \Template\Php\PhpRenderer $this */
 /* @var \App\ReadModel\Views\PostView $post */
 
 $this->extend('layout/default');

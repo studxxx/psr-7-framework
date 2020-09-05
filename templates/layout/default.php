@@ -1,5 +1,5 @@
 <?php
-/* @var \Template\PhpRenderer $this */
+/* @var \Template\Php\PhpRenderer $this */
 ?>
 <!doctype html>
 <html lang="en">
@@ -29,7 +29,7 @@
     </style>
 </head>
 
-<body>
+<body class="app">
 
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <a class="navbar-brand" href="<?= $this->encode($this->path('home')) ?>">Application</a>

@@ -7,7 +7,7 @@ use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraRouterAdapter;
 use Framework\Http\Router\Router;
 use Psr\Container\ContainerInterface;
-use Template\PhpRenderer;
+use Template\Php\PhpRenderer;
 use Template\TemplateRenderer;
 use Zend\Diactoros\Response;
 use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
@@ -39,7 +39,9 @@ return [
                 );
             },
             TemplateRenderer::class => function (ContainerInterface $container) {
-                return new PhpRenderer('templates', $container->get(Router::class));
+                $renderer = new PhpRenderer('templates');
+                $renderer->addExtension($container->get(\Template\Php\Extension\RouteExtension::class));
+                return $renderer;
             },
         ],
     ],

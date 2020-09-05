@@ -242,5 +242,117 @@ $container = new \Zend\ServiceManager\ServiceManager([
 ]);
 ```
 
+### PhpRenderer
+
+```php
+<?php
+
+use Framework\Http\Application;
+use Framework\Http\Router\Router;
+use Template\Php\PhpRenderer;
+
+chdir(dirname(__DIR__));
+
+require 'vendor/autoload.php';
+
+$container = require 'config/container.php';
+$app = $container->get(Application::class);
+require 'config/pipeline.php';
+require 'config/routes.php';
+/** @var Router $router */
+$router = $container->get(Router::class);
+
+class PathFunction
+{
+    private Router $router;
+
+    public function __construct(Router $router)
+    {
+        $this->router = $router;
+    }
+
+    public function __invoke($name, array $params = []): string
+    {
+        return $this->router->generate($name, $params);
+    }
+}
+
+$renderer = new PhpRenderer('templates', $router, [
+    'pathUrl' => $container->get(PathFunction::class),
+]);
+
+$html = $renderer->render('app/hello');
+
+echo $html . PHP_EOL;
+```
+
+```php
+<?php
+
+use Framework\Http\Application;
+use Framework\Http\Router\Router;
+use Template\Php\PhpRenderer;
+
+chdir(dirname(__DIR__));
+
+require 'vendor/autoload.php';
+/** @var \Psr\Container\ContainerInterface $container */
+$container = require 'config/container.php';
+$app = $container->get(Application::class);
+require 'config/pipeline.php';
+require 'config/routes.php';
+/** @var Router $router */
+$router = $container->get(Router::class);
+class Extension
+{
+    public function getFunctions(): array
+    {
+        return [];
+    }
+
+    public function getFilters(): array
+    {
+        return [];
+    }
+}
+
+class Template\Php\Extension\RouteExtension extends Extension
+{
+    private Router $router;
+
+    public function __construct(Router $router)
+    {
+        $this->router = $router;
+    }
+
+    public function getFunctions(): array
+    {
+        return [
+            'pathUrl' => [$this, 'generatePathUrl'],
+        ];
+    }
+
+    public function getFit(): array
+    {
+        return [
+            'pathUrl' => [$this, 'generatePathUrl'],
+        ];
+    }
+
+    public function generatePathUrl($name, array $params = []): string
+    {
+        return $this->router->generate($name, $params);
+    }
+}
+
+$renderer = new PhpRenderer('templates', $router);
+
+$renderer->addFunction($container->get(Template\Php\Extension\RouteExtension::class));
+
+$html = $renderer->render('app/hello');
+
+echo $html . PHP_EOL;
+```
+
 [CHANGELOG]: ./CHANGELOG.md
 [version-badge]: https://img.shields.io/badge/version-0.0.3-blue.svg

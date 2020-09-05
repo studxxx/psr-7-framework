@@ -6,7 +6,7 @@ use App\Http\Action\Blog\IndexAction;
 use App\ReadModel\PostReadRepository;
 use Framework\Http\Router\Router;
 use PHPUnit\Framework\TestCase;
-use Template\PhpRenderer;
+use Template\Php\PhpRenderer;
 
 class IndexActionTest extends TestCase
 {

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Template;
+namespace Template\Php;
 
-use Framework\Http\Router\Router;
+use Template\TemplateRenderer;
 
 class PhpRenderer implements TemplateRenderer
 {
@@ -10,32 +10,62 @@ class PhpRenderer implements TemplateRenderer
     private ?string $extend;
     private array $blocks = [];
     private \SplStack $blockNames;
-    private Router $router;
+    /** @var array|Extension[] */
+    private array $extensions = [];
 
-    public function __construct(string $path, Router $router)
+    public function __construct(string $path)
     {
         $this->path = $path;
         $this->blockNames = new \SplStack();
-        $this->router = $router;
+    }
+
+    public function addExtension(Extension $extension): void
+    {
+        $this->extensions[] = $extension;
+    }
+
+    public function __call($name, $arguments)
+    {
+        foreach ($this->extensions as $extension) {
+            $functions = $extension->getFunctions();
+            foreach ($functions as $function) {
+                /** @var SimpleFunction $function */
+                if ($function->name === $name) {
+                    if ($function->needRenderer) {
+                        return ($function->callback)($this, ...$arguments);
+                    }
+                    return ($function->callback)(...$arguments);
+                }
+            }
+        }
+        throw new \InvalidArgumentException("Undefined function \"$name\"");
     }
 
     public function render($view, array $params = []): string
     {
-        $templateFile = $this->path . '/' . $view . '.php';
+        $level = ob_get_level();
+        try {
+            $templateFile = $this->path . '/' . $view . '.php';
 
-        ob_start();
-        extract($params, EXTR_OVERWRITE);
-        $this->extend = null;
+            ob_start();
+            extract($params, EXTR_OVERWRITE);
+            $this->extend = null;
 
-        require $templateFile;
+            require $templateFile;
 
-        $content = ob_get_clean();
+            $content = ob_get_clean();
 
-        if ($this->extend === null) {
-            return $content;
+            if ($this->extend === null) {
+                return $content;
+            }
+
+            return $this->render($this->extend);
+        } catch (\Throwable|\Exception $e) {
+            while (ob_get_level() > $level) {
+                ob_end_clean();
+            }
+            throw $e;
         }
-
-        return $this->render($this->extend);
     }
 
     public function extend($view): void
@@ -94,10 +124,5 @@ class PhpRenderer implements TemplateRenderer
     public function encode(string $name): string
     {
         return \htmlspecialchars($name, ENT_QUOTES | ENT_SUBSTITUTE);
-    }
-
-    public function path(string $name, array $params = []): string
-    {
-        return $this->router->generate($name, $params);
     }
 }
