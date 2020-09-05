@@ -1,5 +1,5 @@
 <?php
-/* @var \Template\PhpRenderer $this */
+/* @var \Template\Php\PhpRenderer $this */
 /* @var \Throwable $e */
 ?>
 <!doctype html>

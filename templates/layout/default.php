@@ -1,5 +1,5 @@
 <?php
-/* @var \Template\PhpRenderer $this */
+/* @var \Template\Php\PhpRenderer $this */
 ?>
 <!doctype html>
 <html lang="en">

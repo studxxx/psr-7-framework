@@ -1,8 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Template;
+namespace Template\Php;
 
 use Framework\Http\Router\Router;
+use Template\TemplateRenderer;
 
 class PhpRenderer implements TemplateRenderer
 {

@@ -1,6 +1,6 @@
 <?php
 /* @var string $name */
-/* @var \Template\PhpRenderer $this */
+/* @var \Template\Php\PhpRenderer $this */
 
 $this->extend('layout/columns');
 ?>
