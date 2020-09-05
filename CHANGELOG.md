@@ -1,10 +1,14 @@
 # Changelog
 All notable changes to this **demo framework** project will be documented in this file.
 
+## [0.0.6] - 2020-09-05
+### Added
+- Twig templates
+- twig/twig package
+
 ## [0.0.5] - 2020-09-05
 ### Added
-- Templates
-- twig/twig package
+- PHP Templates
 - zendframework/zend-servicemanager package
 - psr/container package
 
