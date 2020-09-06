@@ -7,18 +7,27 @@ use App\Http\Middleware\NotFoundHandler;
 use App\ReadModel\PostReadRepository;
 use Framework\Http\Router\Router;
 use PHPUnit\Framework\TestCase;
-use Template\Php\PhpRenderer;
+use Template\TemplateRenderer;
+use Template\Twig\Extension\RouteExtension;
+use Template\Twig\TwigRenderer;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 use Zend\Diactoros\ServerRequest;
 
 class ShowActionTest extends TestCase
 {
-    private PhpRenderer $renderer;
+    private TemplateRenderer $renderer;
 
     protected function setUp(): void
     {
         parent::setUp();
         $router = $this->createMock(Router::class);
-        $this->renderer = new PhpRenderer('templates', $router);
+        $loader = new FilesystemLoader();
+        $loader->addPath('templates');
+        $twig = new Environment($loader);
+        $extension = new RouteExtension($router);
+        $twig->addExtension($extension);
+        $this->renderer = new TwigRenderer($twig, '.html.twig');
     }
 
     /**
@@ -31,9 +40,10 @@ class ShowActionTest extends TestCase
         $request = (new ServerRequest())
             ->withAttribute('id', $id = 2);
 
-        $response = $action($request, new NotFoundHandler());
+        $response = $action($request, new NotFoundHandler($this->renderer));
 
         self::assertEquals(200, $response->getStatusCode());
+        self::assertStringContainsString('The Second Post', $response->getBody()->getContents());
 //        self::assertJsonStringEqualsJsonString(
 //            json_encode(['id' => $id, 'title' => 'Post #' . $id]),
 //            $response->getBody()->getContents()
@@ -50,9 +60,9 @@ class ShowActionTest extends TestCase
         $request = (new ServerRequest())
             ->withAttribute('id', $id = 10);
 
-        $response = $action($request, new NotFoundHandler());
+        $response = $action($request, new NotFoundHandler($this->renderer));
 
         self::assertEquals(404, $response->getStatusCode());
-        self::assertEquals('Undefined page', $response->getBody()->getContents());
+        self::assertStringContainsString('Not Found', $response->getBody()->getContents());
     }
 }
