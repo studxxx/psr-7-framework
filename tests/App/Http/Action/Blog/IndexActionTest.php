@@ -7,16 +7,26 @@ use App\ReadModel\PostReadRepository;
 use Framework\Http\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Template\Php\PhpRenderer;
+use Template\TemplateRenderer;
+use Template\Twig\Extension\RouteExtension;
+use Template\Twig\TwigRenderer;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 class IndexActionTest extends TestCase
 {
-    private PhpRenderer $renderer;
+    private TemplateRenderer $renderer;
 
     protected function setUp(): void
     {
         parent::setUp();
         $router = $this->createMock(Router::class);
-        $this->renderer = new PhpRenderer('templates', $router);
+        $loader = new FilesystemLoader();
+        $loader->addPath('templates');
+        $twig = new Environment($loader);
+        $extension = new RouteExtension($router);
+        $twig->addExtension($extension);
+        $this->renderer = new TwigRenderer($twig, '.html.twig');
     }
 
     /**
@@ -28,6 +38,7 @@ class IndexActionTest extends TestCase
         $response = $action();
 
         self::assertEquals(200, $response->getStatusCode());
+        self::assertStringContainsString('Blog', $response->getBody()->getContents());
 //        self::assertJsonStringEqualsJsonString(
 //            json_encode([
 //                ['id' => 2, 'title' => 'The Second Post'],

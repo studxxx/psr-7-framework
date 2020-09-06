@@ -4,12 +4,18 @@ namespace Tests\Framework\Http\Pipeline;
 
 use App\Http\Middleware\NotFoundHandler;
 use Framework\Http\Pipeline\MiddlewareResolver;
+use Framework\Http\Router\Router;
 use Interop\Http\Server\MiddlewareInterface;
 use Interop\Http\Server\RequestHandlerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Template\TemplateRenderer;
+use Template\Twig\Extension\RouteExtension;
+use Template\Twig\TwigRenderer;
 use Tests\Framework\Http\DummyContainer;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\Response\HtmlResponse;
@@ -17,6 +23,20 @@ use Zend\Diactoros\ServerRequest;
 
 class MiddlewareResolverTest extends TestCase
 {
+    private TemplateRenderer $renderer;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $router = $this->createMock(Router::class);
+        $loader = new FilesystemLoader();
+        $loader->addPath('templates');
+        $twig = new Environment($loader);
+        $extension = new RouteExtension($router);
+        $twig->addExtension($extension);
+        $this->renderer = new TwigRenderer($twig, '.html.twig');
+    }
+
     /**
      * @covers
      * @dataProvider getValidHandlers
@@ -69,7 +89,7 @@ class MiddlewareResolverTest extends TestCase
         $response = $middleware(
             (new ServerRequest())->withAttribute('attribute', $value = 'value'),
             new Response(),
-            new NotFoundHandler()
+            new NotFoundHandler($this->renderer)
         );
 
         self::assertEquals(['dummy'], $response->getHeader('X-Dummy'));
