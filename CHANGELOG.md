@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this **demo framework** project will be documented in this file.
 
+## [0.0.7] - 2020-09-06
+### Fixed
+- Tests
+
 ## [0.0.6] - 2020-09-05
 ### Added
 - Twig templates
