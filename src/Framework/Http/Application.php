@@ -5,37 +5,61 @@ namespace Framework\Http;
 use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\Route\RouteData;
 use Framework\Http\Router\Router;
+use Interop\Http\Server\MiddlewareInterface;
+use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Stratigility\MiddlewarePipe;
 
-class Application extends MiddlewarePipe
+class Application implements MiddlewareInterface, RequestHandlerInterface
 {
     /** @var callable */
     private $default;
     private MiddlewareResolver $resolver;
     private Router $router;
+    private MiddlewarePipe $pipeline;
+    private ResponseInterface $responsePrototype;
 
-    public function __construct(MiddlewareResolver $resolver, Router $router, callable $default, ResponseInterface $response)
-    {
-        parent::__construct();
+    public function __construct(
+        MiddlewareResolver $resolver,
+        Router $router,
+        callable $default,
+        ResponseInterface $responsePrototype
+    ) {
         $this->resolver = $resolver;
         $this->default = $default;
-        $this->setResponsePrototype($response);
+
+        $this->pipeline = new MiddlewarePipe();
+        $this->pipeline->setResponsePrototype($responsePrototype);
+
         $this->router = $router;
+        $this->responsePrototype = $responsePrototype;
     }
 
     public function pipe($path, $middleware = null): MiddlewarePipe
     {
         if ($middleware === null) {
-            return parent::pipe($this->resolver->resolve($path, $this->responsePrototype));
+            return $this->pipeline->pipe($this->resolver->resolve($path, $this->responsePrototype));
         }
-        return parent::pipe($path, $this->resolver->resolve($middleware, $this->responsePrototype));
+        return $this->pipeline->pipe($path, $this->resolver->resolve($middleware, $this->responsePrototype));
     }
 
-    public function run(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        callable $next
+    ): ResponseInterface {
+        return ($this->pipeline)($request, $response, $next);
+    }
+
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return $this($request, $response, $this->default);
+        return $this->pipeline->process($request, $handler);
+    }
+
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this($request, $this->responsePrototype, $this->default);
     }
 
     public function route($name, $path, $handler, array $methods, array $options = []): void

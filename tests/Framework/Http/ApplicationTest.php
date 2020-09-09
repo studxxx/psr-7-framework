@@ -35,7 +35,7 @@ class ApplicationTest extends TestCase
         $app->pipe(new MiddleWare2());
 
         /** @var ResponseInterface $response */
-        $response = $app->run(new ServerRequest(), new Response());
+        $response = $app->handle(new ServerRequest(), new Response());
 
         $this->assertJsonStringEqualsJsonString(
             json_encode(['middleware-1' => 1, 'middleware-2' => 2]),
