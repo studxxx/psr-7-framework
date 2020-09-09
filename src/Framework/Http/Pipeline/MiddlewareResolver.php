@@ -11,21 +11,26 @@ use Zend\Stratigility\MiddlewarePipe;
 class MiddlewareResolver
 {
     private ContainerInterface $container;
+    /**
+     * @var ResponseInterface
+     */
+    private ResponseInterface $responsePrototype;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, ResponseInterface $responsePrototype)
     {
         $this->container = $container;
+        $this->responsePrototype = $responsePrototype;
     }
 
-    public function resolve($handler, ResponseInterface $response): callable
+    public function resolve($handler): callable
     {
         if (\is_array($handler)) {
-            return $this->createPipe($handler, $response);
+            return $this->createPipe($handler);
         }
 
         if (\is_string($handler) && $this->container->has($handler)) {
             return function (ServerRequestInterface $request, ResponseInterface $response, callable $next) use ($handler) {
-                $middleware = $this->resolve($this->container->get($handler), $response);
+                $middleware = $this->resolve($this->container->get($handler));
                 return $middleware($request, $response, $next);
             };
         }
@@ -52,12 +57,12 @@ class MiddlewareResolver
         throw new UnknownMiddlewareTypeException($handler);
     }
 
-    private function createPipe(array $handlers, $response): MiddlewarePipe
+    private function createPipe(array $handlers): MiddlewarePipe
     {
         $pipeline = new MiddlewarePipe();
-        $pipeline->setResponsePrototype($response);
+        $pipeline->setResponsePrototype($this->responsePrototype);
         foreach ($handlers as $handler) {
-            $pipeline->pipe($this->resolve($handler, $response));
+            $pipeline->pipe($this->resolve($handler));
         }
         return $pipeline;
     }

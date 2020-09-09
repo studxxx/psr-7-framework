@@ -44,8 +44,8 @@ class MiddlewareResolverTest extends TestCase
      */
     public function testDirect($handler): void
     {
-        $resolver = new MiddlewareResolver(new DummyContainer());
-        $middleware = $resolver->resolve($handler, new Response());
+        $resolver = new MiddlewareResolver(new DummyContainer(), new Response());
+        $middleware = $resolver->resolve($handler);
 
         $response = $middleware(
             (new ServerRequest())->withAttribute('attribute', $value = 'value'),
@@ -63,8 +63,8 @@ class MiddlewareResolverTest extends TestCase
      */
     public function testNext($handler): void
     {
-        $resolver = new MiddlewareResolver(new DummyContainer());
-        $middleware = $resolver->resolve($handler, new Response());
+        $resolver = new MiddlewareResolver(new DummyContainer(), new Response());
+        $middleware = $resolver->resolve($handler);
 
         $response = $middleware(
             (new ServerRequest())->withAttribute('next', true),
@@ -80,11 +80,11 @@ class MiddlewareResolverTest extends TestCase
      */
     public function testArray(): void
     {
-        $resolver = new MiddlewareResolver(new DummyContainer());
+        $resolver = new MiddlewareResolver(new DummyContainer(), new Response());
         $middleware = $resolver->resolve([
             new DummyMiddleware(),
             new SinglePassMiddleware(),
-        ], new Response());
+        ]);
 
         $response = $middleware(
             (new ServerRequest())->withAttribute('attribute', $value = 'value'),

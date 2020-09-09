@@ -29,7 +29,7 @@ return [
                 return new AuraRouterAdapter(new RouterContainer());
             },
             MiddlewareResolver::class => function (ContainerInterface $container) {
-                return new MiddlewareResolver($container);
+                return new MiddlewareResolver($container, new Response());
             },
             Middleware\ErrorHandlerMiddleware::class => function (ContainerInterface $container) {
                 return new Middleware\ErrorHandlerMiddleware(
