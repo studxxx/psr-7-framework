@@ -5,34 +5,28 @@ namespace App\Http\Middleware\ErrorHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Template\TemplateRenderer;
+use Zend\Diactoros\Response;
 use Zend\Stratigility\Utils;
 
 class HtmlErrorResponseGenerator implements ErrorResponseGenerator
 {
     private TemplateRenderer $template;
     private array $views;
-    private ResponseInterface $response;
 
-    public function __construct(TemplateRenderer $template, array $views, ResponseInterface $response)
+    public function __construct(TemplateRenderer $template, array $views)
     {
         $this->template = $template;
         $this->views = $views;
-        $this->response = $response;
     }
 
     public function generate(\Throwable $e, ServerRequestInterface $request): ResponseInterface
     {
-        $code = Utils::getStatusCode($e, $this->response);
+        $code = Utils::getStatusCode($e, new Response());
 
-        $response = $this->response->withStatus($code);
-        $response
-            ->getBody()
-            ->write($this->template->render($this->getView($code), [
-                'request' => $request,
-                'exception' => $e,
-            ]));
-
-        return $response;
+        return new Response\HtmlResponse($this->template->render($this->getView($code), [
+            'request' => $request,
+            'exception' => $e,
+        ]), $code);
     }
 
     private function getView(int $code): string

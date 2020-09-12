@@ -37,15 +37,19 @@ return [
                 );
             },
             Middleware\ErrorHandler\ErrorResponseGenerator::class => function (ContainerInterface $container) {
+                if ($container->get('config')['debug']) {
+                    return new Middleware\ErrorHandler\DebugErrorResponseGenerator(
+                        $container->get(TemplateRenderer::class),
+                        'error/error-debug'
+                    );
+                }
                 return new Middleware\ErrorHandler\HtmlErrorResponseGenerator(
                     $container->get(TemplateRenderer::class),
-                    $container->get('config')['debug']
-                        ? ['error/error-debug']
-                        : [
-                            '404' => 'error/404',
-                            '403' => 'error/403',
-                            'error' => 'error/error',
-                        ]
+                    [
+                        '404' => 'error/404',
+                        '403' => 'error/403',
+                        'error' => 'error/error',
+                    ]
                 );
             },
         ],
