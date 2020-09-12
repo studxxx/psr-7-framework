@@ -13,9 +13,9 @@
 
 <main role="main" class="app-content">
     <div class="container">
-        <h1>Exception: {{ e.getMessage() }}</h1>
-        <p>Code: {{ e.getCode() }}</p>
-        {% for trace in e.getTrace() %}
+        <h1>Exception: {{ exception.getMessage() }}</h1>
+        <p>Code: {{ exception.getCode() }}</p>
+        {% for trace in exception.getTrace() %}
             <p>{{ trace.file }} on line {{ trace.line }}</p>
         {% endfor %}
     </div>
