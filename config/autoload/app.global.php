@@ -21,7 +21,7 @@ return [
                 return new Application(
                     $container->get(MiddlewareResolver::class),
                     $container->get(Router::class),
-                    new Middleware\NotFoundHandler($container->get(TemplateRenderer::class)),
+                    $container->get(Middleware\NotFoundHandler::class),
                     new Response()
                 );
             },
@@ -29,7 +29,7 @@ return [
                 return new AuraRouterAdapter(new RouterContainer());
             },
             MiddlewareResolver::class => function (ContainerInterface $container) {
-                return new MiddlewareResolver($container);
+                return new MiddlewareResolver($container, new Response());
             },
             Middleware\ErrorHandlerMiddleware::class => function (ContainerInterface $container) {
                 return new Middleware\ErrorHandlerMiddleware(
