@@ -40,11 +40,13 @@ return [
                 if ($container->get('config')['debug']) {
                     return new Middleware\ErrorHandler\DebugErrorResponseGenerator(
                         $container->get(TemplateRenderer::class),
+                        new Response(),
                         'error/error-debug'
                     );
                 }
                 return new Middleware\ErrorHandler\HtmlErrorResponseGenerator(
                     $container->get(TemplateRenderer::class),
+                    new Response(),
                     [
                         '404' => 'error/404',
                         '403' => 'error/403',
