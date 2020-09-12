@@ -12,21 +12,29 @@ class HtmlErrorResponseGenerator implements ErrorResponseGenerator
 {
     private TemplateRenderer $template;
     private array $views;
+    private ResponseInterface $response;
 
-    public function __construct(TemplateRenderer $template, array $views)
+    public function __construct(TemplateRenderer $template, ResponseInterface $response, array $views)
     {
         $this->template = $template;
         $this->views = $views;
+        $this->response = $response;
     }
 
     public function generate(\Throwable $e, ServerRequestInterface $request): ResponseInterface
     {
-        $code = Utils::getStatusCode($e, new Response());
+        $code = Utils::getStatusCode($e, $this->response);
 
-        return new Response\HtmlResponse($this->template->render($this->getView($code), [
-            'request' => $request,
-            'exception' => $e,
-        ]), $code);
+        $response = $this->response->withStatus($code);
+
+        $response
+            ->getBody()
+            ->write($this->template->render($this->getView($code), [
+                'request' => $request,
+                'exception' => $e,
+            ]));
+
+        return $response;
     }
 
     private function getView(int $code): string
