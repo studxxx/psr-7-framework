@@ -2,11 +2,10 @@
 
 namespace Tests\Framework\Http\Pipeline;
 
-use App\Http\Middleware\NotFoundHandler;
 use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\Router;
-use Interop\Http\Server\MiddlewareInterface;
-use Interop\Http\Server\RequestHandlerInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -47,10 +46,9 @@ class MiddlewareResolverTest extends TestCase
         $resolver = new MiddlewareResolver(new DummyContainer(), new Response());
         $middleware = $resolver->resolve($handler);
 
-        $response = $middleware(
+        $response = $middleware->process(
             (new ServerRequest())->withAttribute('attribute', $value = 'value'),
-            new Response(),
-            new NotFoundMiddleware()
+            new NotFoundHandler()
         );
 
         self::assertEquals([$value], $response->getHeader('X-Header'));
@@ -66,10 +64,9 @@ class MiddlewareResolverTest extends TestCase
         $resolver = new MiddlewareResolver(new DummyContainer(), new Response());
         $middleware = $resolver->resolve($handler);
 
-        $response = $middleware(
+        $response = $middleware->process(
             (new ServerRequest())->withAttribute('next', true),
-            new Response(),
-            new NotFoundMiddleware()
+            new NotFoundHandler()
         );
 
         self::assertEquals(404, $response->getStatusCode());
@@ -86,10 +83,9 @@ class MiddlewareResolverTest extends TestCase
             new SinglePassMiddleware(),
         ]);
 
-        $response = $middleware(
+        $response = $middleware->process(
             (new ServerRequest())->withAttribute('attribute', $value = 'value'),
-            new Response(),
-            new NotFoundHandler($this->renderer)
+            new NotFoundHandler()
         );
 
         self::assertEquals(['dummy'], $response->getHeader('X-Dummy'));
@@ -162,9 +158,18 @@ class PsrMiddleware implements MiddlewareInterface
     }
 }
 
-class NotFoundMiddleware
+class PsrHandler implements RequestHandlerInterface
 {
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        return (new HtmlResponse(''))
+            ->withHeader('X-Header', $request->getAttribute('attribute'));
+    }
+}
+
+class NotFoundHandler implements RequestHandlerInterface
+{
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return new EmptyResponse(404);
     }

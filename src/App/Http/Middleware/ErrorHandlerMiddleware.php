@@ -4,10 +4,12 @@ namespace App\Http\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Template\TemplateRenderer;
 use Zend\Diactoros\Response\HtmlResponse;
 
-class ErrorHandlerMiddleware
+class ErrorHandlerMiddleware implements MiddlewareInterface
 {
     private bool $debug;
     private TemplateRenderer $template;
@@ -18,10 +20,10 @@ class ErrorHandlerMiddleware
         $this->template = $template;
     }
 
-    public function __invoke(ServerRequestInterface $request, callable $next): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         try {
-            return $next($request);
+            return $handler->handle($request);
         } catch (\Throwable $e) {
             if ($this->debug) {
                 return new HtmlResponse($this->template->render('error/error-debug', [

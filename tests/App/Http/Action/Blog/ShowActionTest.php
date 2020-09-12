@@ -3,7 +3,6 @@
 namespace Tests\App\Http\Action\Blog;
 
 use App\Http\Action\Blog\ShowAction;
-use App\Http\Middleware\NotFoundHandler;
 use App\ReadModel\PostReadRepository;
 use Framework\Http\Router\Router;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +39,7 @@ class ShowActionTest extends TestCase
         $request = (new ServerRequest())
             ->withAttribute('id', $id = 2);
 
-        $response = $action($request, new NotFoundHandler($this->renderer));
+        $response = $action->handle($request);
 
         self::assertEquals(200, $response->getStatusCode());
         self::assertStringContainsString('The Second Post', $response->getBody()->getContents());
@@ -60,9 +59,9 @@ class ShowActionTest extends TestCase
         $request = (new ServerRequest())
             ->withAttribute('id', $id = 10);
 
-        $response = $action($request, new NotFoundHandler($this->renderer));
+        $response = $action->handle($request);
 
         self::assertEquals(404, $response->getStatusCode());
-        self::assertStringContainsString('Not Found', $response->getBody()->getContents());
+        self::assertStringContainsString('', $response->getBody()->getContents());
     }
 }

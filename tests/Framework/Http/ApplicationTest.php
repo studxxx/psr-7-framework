@@ -8,6 +8,8 @@ use Framework\Http\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\JsonResponse;
 use Zend\Diactoros\ServerRequest;
@@ -31,11 +33,11 @@ class ApplicationTest extends TestCase
     {
         $app = new Application($this->resolver, $this->router, new DefaultHandler(), new Response());
 
-        $app->pipe(new MiddleWare1());
-        $app->pipe(new MiddleWare2());
+        $app->pipe(new MiddleWare1($this->resolver));
+        $app->pipe(new MiddleWare2($this->resolver));
 
         /** @var ResponseInterface $response */
-        $response = $app->handle(new ServerRequest(), new Response());
+        $response = $app->handle(new ServerRequest());
 
         $this->assertJsonStringEqualsJsonString(
             json_encode(['middleware-1' => 1, 'middleware-2' => 2]),
@@ -44,25 +46,39 @@ class ApplicationTest extends TestCase
     }
 }
 
-class MiddleWare1
+class MiddleWare1 implements MiddlewareInterface
 {
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
+    private MiddlewareResolver $resolver;
+
+    public function __construct(MiddlewareResolver $resolver)
     {
-        return $next($request->withAttribute('middleware-1', 1));
+        $this->resolver = $resolver;
+    }
+
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        return $handler->handle($request->withAttribute('middleware-1', 1));
     }
 }
 
-class MiddleWare2
+class MiddleWare2 implements MiddlewareInterface
 {
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
+    private MiddlewareResolver $resolver;
+
+    public function __construct(MiddlewareResolver $resolver)
     {
-        return $next($request->withAttribute('middleware-2', 2));
+        $this->resolver = $resolver;
+    }
+
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        return $handler->handle($request->withAttribute('middleware-2', 2));
     }
 }
 
-class DefaultHandler
+class DefaultHandler implements RequestHandlerInterface
 {
-    public function __invoke(ServerRequestInterface $request)
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return new JsonResponse($request->getAttributes());
     }
