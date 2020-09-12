@@ -39,11 +39,13 @@ return [
             Middleware\ErrorHandler\ErrorResponseGenerator::class => function (ContainerInterface $container) {
                 return new Middleware\ErrorHandler\HtmlErrorResponseGenerator(
                     $container->get(TemplateRenderer::class),
-                    [
-                        '404' => 'error/404',
-                        '403' => 'error/403',
-                        'default' => 'error/error',
-                    ]
+                    $container->get('config')['debug']
+                        ? ['error/error-debug']
+                        : [
+                            '404' => 'error/404',
+                            '403' => 'error/403',
+                            'error' => 'error/error',
+                        ]
                 );
             },
         ],

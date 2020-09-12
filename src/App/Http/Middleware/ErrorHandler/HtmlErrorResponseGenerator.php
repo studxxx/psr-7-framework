@@ -35,6 +35,6 @@ class HtmlErrorResponseGenerator implements ErrorResponseGenerator
         if (array_key_exists($code, $this->views)) {
             return $this->views[$code];
         }
-        return $this->views['default'];
+        return $this->views['error'];
     }
 }
