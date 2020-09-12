@@ -10,19 +10,17 @@ use Zend\Diactoros\Response\HtmlResponse;
 class HtmlErrorResponseGenerator implements ErrorResponseGenerator
 {
     private TemplateRenderer $template;
-    private bool $debug;
+    private string $view;
 
-    public function __construct(bool $debug, TemplateRenderer $template)
+    public function __construct(TemplateRenderer $template, $view)
     {
-        $this->debug = $debug;
         $this->template = $template;
+        $this->view = $view;
     }
 
     public function generate(\Throwable $e, ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->debug ? 'error/error-debug' : 'error/error';
-
-        return new HtmlResponse($this->template->render($view, [
+        return new HtmlResponse($this->template->render($this->view, [
             'request' => $request,
             'exception' => $e,
         ]), self::getStatusCode($e));

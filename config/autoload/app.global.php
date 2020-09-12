@@ -38,8 +38,8 @@ return [
             },
             Middleware\ErrorHandler\ErrorResponseGenerator::class => function (ContainerInterface $container) {
                 return new Middleware\ErrorHandler\HtmlErrorResponseGenerator(
-                    $container->get('config')['debug'],
-                    $container->get(TemplateRenderer::class)
+                    $container->get(TemplateRenderer::class),
+                    $container->get('config')['debug'] ? 'error/error-debug' : 'error/error'
                 );
             },
         ],
