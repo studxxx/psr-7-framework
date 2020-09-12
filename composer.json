@@ -38,6 +38,7 @@
         }
     },
     "require-dev": {
+        "filp/whoops": "^2.6@dev",
         "phpunit/phpunit": "^9.4@dev"
     },
     "scripts": {
