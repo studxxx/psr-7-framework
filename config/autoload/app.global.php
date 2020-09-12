@@ -33,11 +33,15 @@ return [
             },
             Middleware\ErrorHandlerMiddleware::class => function (ContainerInterface $container) {
                 return new Middleware\ErrorHandlerMiddleware(
+                    $container->get(Middleware\ErrorHandler\ErrorResponseGenerator::class)
+                );
+            },
+            Middleware\ErrorHandler\ErrorResponseGenerator::class => function (ContainerInterface $container) {
+                return new Middleware\ErrorHandler\HtmlErrorResponseGenerator(
                     $container->get('config')['debug'],
                     $container->get(TemplateRenderer::class)
                 );
             },
-
         ],
     ],
     'debug' => false,

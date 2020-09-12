@@ -31,9 +31,9 @@ or
 - Middlewares
 - Container and DI
 - Template
+- Upgrade until PSR-15
 
 ### In progress
-- Upgrade until PSR-15
 - Display Errors
 - Log
 
