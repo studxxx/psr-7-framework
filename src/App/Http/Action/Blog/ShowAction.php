@@ -20,7 +20,7 @@ class ShowAction
         $this->template = $template;
     }
 
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
         if (!$post = $this->posts->find($request->getAttribute('id'))) {
             return new EmptyResponse(404);

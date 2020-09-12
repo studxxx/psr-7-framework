@@ -39,7 +39,7 @@ class ShowActionTest extends TestCase
         $request = (new ServerRequest())
             ->withAttribute('id', $id = 2);
 
-        $response = $action->handle($request);
+        $response = $action($request);
 
         self::assertEquals(200, $response->getStatusCode());
         self::assertStringContainsString('The Second Post', $response->getBody()->getContents());
@@ -59,7 +59,7 @@ class ShowActionTest extends TestCase
         $request = (new ServerRequest())
             ->withAttribute('id', $id = 10);
 
-        $response = $action->handle($request);
+        $response = $action($request);
 
         self::assertEquals(404, $response->getStatusCode());
         self::assertStringContainsString('', $response->getBody()->getContents());
