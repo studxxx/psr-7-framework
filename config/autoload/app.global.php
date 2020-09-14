@@ -8,6 +8,9 @@ use Framework\Http\Router\AuraRouterAdapter;
 use Framework\Http\Router\Router;
 use Psr\Container\ContainerInterface;
 use Template\TemplateRenderer;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
+use Whoops\RunInterface;
 use Zend\Diactoros\Response;
 use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
@@ -38,10 +41,9 @@ return [
             },
             Middleware\ErrorHandler\ErrorResponseGenerator::class => function (ContainerInterface $container) {
                 if ($container->get('config')['debug']) {
-                    return new Middleware\ErrorHandler\DebugErrorResponseGenerator(
-                        $container->get(TemplateRenderer::class),
-                        new Response(),
-                        'error/error-debug'
+                    return new Middleware\ErrorHandler\WhoopsErrorResponseGenerator(
+                        $container->get(RunInterface::class),
+                        new Response()
                     );
                 }
                 return new Middleware\ErrorHandler\HtmlErrorResponseGenerator(
@@ -53,6 +55,14 @@ return [
                         'error' => 'error/error',
                     ]
                 );
+            },
+            RunInterface::class => function () {
+                $whoops = new Run();
+                $whoops->writeToOutput(false);
+                $whoops->allowQuit(false);
+                $whoops->pushHandler(new PrettyPageHandler());
+                $whoops->register();
+                return $whoops;
             },
         ],
     ],
