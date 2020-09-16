@@ -3,6 +3,9 @@
 use App\Http\Middleware as Middleware;
 use Aura\Router\RouterContainer;
 use Framework\Http\Application;
+use Framework\Http\Middleware\ErrorHandler\ErrorHandlerMiddleware;
+use Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator;
+use Framework\Http\Middleware\ErrorHandler\WhoopsErrorResponseGenerator;
 use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraRouterAdapter;
 use Framework\Http\Router\Router;
@@ -34,14 +37,14 @@ return [
             MiddlewareResolver::class => function (ContainerInterface $container) {
                 return new MiddlewareResolver($container, new Response());
             },
-            Middleware\ErrorHandlerMiddleware::class => function (ContainerInterface $container) {
-                return new Middleware\ErrorHandlerMiddleware(
-                    $container->get(Middleware\ErrorHandler\ErrorResponseGenerator::class)
+            ErrorHandlerMiddleware::class => function (ContainerInterface $container) {
+                return new ErrorHandlerMiddleware(
+                    $container->get(ErrorResponseGenerator::class)
                 );
             },
-            Middleware\ErrorHandler\ErrorResponseGenerator::class => function (ContainerInterface $container) {
+            ErrorResponseGenerator::class => function (ContainerInterface $container) {
                 if ($container->get('config')['debug']) {
-                    return new Middleware\ErrorHandler\WhoopsErrorResponseGenerator(
+                    return new WhoopsErrorResponseGenerator(
                         $container->get(RunInterface::class),
                         new Response()
                     );
