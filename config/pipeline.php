@@ -5,6 +5,7 @@ use App\Http\Middleware as Middleware;
 use Framework\Http\Middleware as FrameworkMiddleware;
 
 $app->pipe(FrameworkMiddleware\ErrorHandler\ErrorHandlerMiddleware::class);
+$app->pipe(Middleware\ResponseLoggerMiddleware::class);
 $app->pipe(Middleware\CredentialsMiddleware::class);
 $app->pipe(Middleware\ProfilerMiddleware::class);
 $app->pipe(FrameworkMiddleware\RouteMiddleware::class);
