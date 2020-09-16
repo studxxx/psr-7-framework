@@ -10,7 +10,9 @@ use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraRouterAdapter;
 use Framework\Http\Router\Router;
 use Infrastructure\Framework\Http\Middleware\ErrorHandler\HtmlErrorResponseGenerator;
+use Monolog\Logger;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 use Template\TemplateRenderer;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -40,7 +42,8 @@ return [
             },
             ErrorHandlerMiddleware::class => function (ContainerInterface $container) {
                 return new ErrorHandlerMiddleware(
-                    $container->get(ErrorResponseGenerator::class)
+                    $container->get(ErrorResponseGenerator::class),
+                    $container->get(LoggerInterface::class)
                 );
             },
             ErrorResponseGenerator::class => function (ContainerInterface $container) {
@@ -68,6 +71,15 @@ return [
                 $whoops->register();
                 return $whoops;
             },
+
+            LoggerInterface::class => function (ContainerInterface $container) {
+                $logger = new Logger('App');
+                $logger->pushHandler(new \Monolog\Handler\StreamHandler(
+                    'var/log/application.log',
+                    $container->get('config')['debug'] ? Logger::DEBUG : Logger::WARNING
+                ));
+                return $logger;
+            }
         ],
     ],
     'debug' => false,
