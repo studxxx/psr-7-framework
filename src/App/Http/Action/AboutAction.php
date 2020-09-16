@@ -17,7 +17,6 @@ class AboutAction
 
     public function __invoke(): ResponseInterface
     {
-        throw new \LogicException('dddddddddddd', 402);
         return new HtmlResponse($this->template->render('app/about', [
             'content' => 'I am a simple site.',
         ]));
