@@ -9,6 +9,7 @@ use Framework\Http\Middleware\ErrorHandler\WhoopsErrorResponseGenerator;
 use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraRouterAdapter;
 use Framework\Http\Router\Router;
+use Infrastructure\Framework\Http\Middleware\ErrorHandler\HtmlErrorResponseGenerator;
 use Psr\Container\ContainerInterface;
 use Template\TemplateRenderer;
 use Whoops\Handler\PrettyPageHandler;
@@ -49,7 +50,7 @@ return [
                         new Response()
                     );
                 }
-                return new Middleware\ErrorHandler\HtmlErrorResponseGenerator(
+                return new HtmlErrorResponseGenerator(
                     $container->get(TemplateRenderer::class),
                     new Response(),
                     [
