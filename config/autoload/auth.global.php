@@ -1,15 +1,12 @@
 <?php
 
-use App\Http\Middleware as Middleware;
-use Psr\Container\ContainerInterface;
-use Zend\Diactoros\Response;
+use App\Http\Middleware\BasicAuthMiddleware;
+use Infrastructure\App\Http\Middleware\BasicAuthMiddlewareFactory;
 
 return [
     'dependencies' => [
         'factories' => [
-            Middleware\BasicAuthMiddleware::class => function (ContainerInterface $container) {
-                return new Middleware\BasicAuthMiddleware($container->get('config')['auth']['users'], new Response());
-            },
+            BasicAuthMiddleware::class => BasicAuthMiddlewareFactory::class,
         ],
     ],
 
