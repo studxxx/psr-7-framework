@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this **demo framework** project will be documented in this file.
 
+## [0.0.8] - 2020-09-17
+### Added
+- Error Handler
+- Logger
+- PSR-15 package
+- flip/whoops package
+- monolog/monolog package
+
 ## [0.0.7] - 2020-09-06
 ### Fixed
 - Tests
