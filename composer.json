@@ -7,16 +7,18 @@
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "aura/router": "3.x-dev",
-        "http-interop/http-middleware": "^0.5.0",
+        "monolog/monolog": "^2.0@dev",
         "psr/container": "^1.0@dev",
         "psr/http-message": "^1.0@dev",
+        "psr/http-server-middleware": "^1.0@dev",
+        "psr/log": "^1.1@dev",
         "roave/security-advisories": "dev-master",
         "twig/twig": "3.x-dev",
         "zendframework/zend-config-aggregator": "^1.2@dev",
         "zendframework/zend-diactoros": "^2.1@dev",
         "zendframework/zend-httphandlerrunner": "^1.1@dev",
         "zendframework/zend-servicemanager": "4.0.x-dev",
-        "zendframework/zend-stratigility": "2.1.2"
+        "zendframework/zend-stratigility": "^3.0"
     },
     "license": "GNU GPL",
     "authors": [
@@ -32,16 +34,21 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/App/",
-            "Framework\\": "src/Framework/",
             "Template\\": "src/Template/",
+            "Infrastructure\\": "src/Infrastructure/",
+            "Framework\\": "src/Framework/",
             "Tests\\": "tests/"
         }
     },
     "require-dev": {
+        "filp/whoops": "^2.6@dev",
         "phpunit/phpunit": "^9.4@dev"
     },
     "scripts": {
         "serve": "php -S localhost:8000 -t public/ public/index.php",
-        "test": "phpunit --colors=always"
+        "test": "phpunit --colors=always",
+        "dev-enable": "cp config/autoload/develop.local.php.dist config/autoload/develop.local.php",
+        "dev-disable": "rm config/autoload/develop.local.php",
+        "clear-cache": "rm config/autoload/config-cache.php"
     }
 }

@@ -6,8 +6,10 @@ use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\Result;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class DispatchMiddleware
+class DispatchMiddleware implements MiddlewareInterface
 {
     private MiddlewareResolver $resolver;
 
@@ -16,13 +18,13 @@ class DispatchMiddleware
         $this->resolver = $resolver;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         /** @var Result $result */
         if (!$result = $request->getAttribute(Result::class)) {
-            return $next($request);
+            return $handler->handle($request);
         }
-        $middleware = $this->resolver->resolve($result->getHandler(), $response);
-        return $middleware($request, $response, $next);
+        $middleware = $this->resolver->resolve($result->getHandler());
+        return $middleware->process($request, $handler);
     }
 }

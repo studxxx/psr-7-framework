@@ -2,11 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Template\TemplateRenderer;
 use Zend\Diactoros\Response\HtmlResponse;
 
-class NotFoundHandler
+class NotFoundHandler implements RequestHandlerInterface
 {
     private TemplateRenderer $template;
 
@@ -15,7 +17,7 @@ class NotFoundHandler
         $this->template = $template;
     }
 
-    public function __invoke(ServerRequestInterface $request)
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return new HtmlResponse($this->template->render('error/404', [
             'request' => $request
