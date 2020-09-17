@@ -22,7 +22,7 @@ class ErrorHandlerMiddlewareTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $logger->method('error')->willReturn(null);
 
-        $this->handler = new ErrorHandlerMiddleware(new DummyGenerator(), $logger);
+        $this->handler = new ErrorHandlerMiddleware(new DummyGenerator());
     }
 
     /**

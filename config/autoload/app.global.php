@@ -10,6 +10,7 @@ use Framework\Http\Pipeline\MiddlewareResolver;
 use Framework\Http\Router\AuraRouterAdapter;
 use Framework\Http\Router\Router;
 use Infrastructure\Framework\Http\Middleware\ErrorHandler\HtmlErrorResponseGenerator;
+use Infrastructure\Framework\Http\Middleware\ErrorHandler\LogErrorListener;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -41,10 +42,11 @@ return [
                 return new MiddlewareResolver($container, new Response());
             },
             ErrorHandlerMiddleware::class => function (ContainerInterface $container) {
-                return new ErrorHandlerMiddleware(
+                $middleware = new ErrorHandlerMiddleware(
                     $container->get(ErrorResponseGenerator::class),
-                    $container->get(LoggerInterface::class)
                 );
+                $middleware->addListener($container->get(LogErrorListener::class));
+                return $middleware;
             },
             ErrorResponseGenerator::class => function (ContainerInterface $container) {
                 if ($container->get('config')['debug']) {
