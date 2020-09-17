@@ -10,6 +10,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 class ErrorHandlerMiddleware implements MiddlewareInterface
 {
     private ErrorResponseGenerator $generator;
+    /** @var callable[] */
+    private array $listeners = [];
 
     public function __construct(ErrorResponseGenerator $generator)
     {
@@ -21,7 +23,15 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
         try {
             return $handler->handle($request);
         } catch (\Throwable $e) {
+            foreach ($this->listeners as $listener) {
+                $listener($e, $request);
+            }
             return $this->generator->generate($e, $request);
         }
+    }
+
+    public function addListener(callable $listener): void
+    {
+        $this->listeners[] = $listener;
     }
 }
