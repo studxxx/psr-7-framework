@@ -1,0 +1,31 @@
+<?php
+
+use Framework\Http\Middleware\ErrorHandler\ErrorResponseGenerator;
+use Framework\Http\Middleware\ErrorHandler\WhoopsErrorResponseGenerator;
+use Psr\Container\ContainerInterface;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
+use Whoops\RunInterface;
+use Zend\Diactoros\Response;
+
+return [
+    'dependencies' => [
+        'factories' => [
+            ErrorResponseGenerator::class => function (ContainerInterface $container) {
+                return new WhoopsErrorResponseGenerator(
+                    $container->get(RunInterface::class),
+                    new Response()
+                );
+            },
+            RunInterface::class => function () {
+                $whoops = new Run();
+                $whoops->writeToOutput(false);
+                $whoops->allowQuit(false);
+                $whoops->pushHandler(new PrettyPageHandler());
+                $whoops->register();
+                return $whoops;
+            },
+        ],
+    ],
+    'debug' => true,
+];
