@@ -46,10 +46,16 @@
         "squizlabs/php_codesniffer": "^3.0@dev"
     },
     "scripts": {
+        "check": [
+            "@cs-check",
+            "@test"
+        ],
         "serve": "php -S localhost:8000 -t public/ public/index.php",
         "test": "phpunit --colors=always",
         "dev-enable": "cp config/autoload/develop.local.php.dist config/autoload/develop.local.php",
         "dev-disable": "rm config/autoload/develop.local.php",
-        "clear-cache": "rm config/autoload/config-cache.php"
+        "clear-cache": "rm config/autoload/config-cache.php",
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf"
     }
 }
