@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Framework\Http\Pipeline;
 
@@ -25,7 +27,7 @@ final class SinglePassMiddlewareDecorator implements MiddlewareInterface
      * @throws Exception\MissingResponseException if the decorated middleware
      *     fails to produce a response.
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = ($this->middleware)(
             $request,
@@ -39,7 +41,7 @@ final class SinglePassMiddlewareDecorator implements MiddlewareInterface
         return $response;
     }
 
-    private function decorateHandler(RequestHandlerInterface $handler) : callable
+    private function decorateHandler(RequestHandlerInterface $handler): callable
     {
         return function ($request) use ($handler) {
             return $handler->handle($request);
