@@ -23,7 +23,7 @@ class ClearCacheCommand
     {
         $output->writeln('<comment>Clearing cache</comment>');
 
-        $alias = $input->getArgument(0);
+        $alias = $input->getArgument(1);
 
         if (empty($alias)) {
             $alias = $input->choose('Choose path', array_merge(array_keys($this->paths), ['all']));
@@ -40,7 +40,7 @@ class ClearCacheCommand
 
         foreach ($paths as $path) {
             if ($this->files->exists($path)) {
-                $output->writeln('Remove ' . $path );
+                $output->writeln('Remove ' . $path);
                 $this->files->delete($path);
             } else {
                 $output->writeln('Skip ' . $path);

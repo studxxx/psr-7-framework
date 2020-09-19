@@ -10,7 +10,31 @@ require 'vendor/autoload.php';
 /** @var \Psr\Container\ContainerInterface $container */
 $container = require 'config/container.php';
 
-/** @var ClearCacheCommand $command */
-$command = $container->get(ClearCacheCommand::class);
+$commands = [
+    [
+        'name' => 'cache:clear',
+        'command' => ClearCacheCommand::class,
+        'description' => 'Clear cache',
+    ],
+];
 
-$command->execute(new Console\Input($argv), new Console\Output());
+$input = new Console\Input($argv);
+$output = new Console\Output();
+
+$name = $input->getArgument(0);
+if (!empty($name)) {
+    foreach ($commands as ['name' => $commandName, 'command' => $commandClass]) {
+        if ($commandName === $name) {
+            $command = $container->get($commandClass);
+            $command->execute($input, $output);
+            exit;
+        }
+    }
+    throw new InvalidArgumentException("Undefined command $name");
+}
+
+$output->writeln('<comment>Available commands:</comment>');
+$output->writeln('');
+foreach ($commands as ['name' => $command, 'description' => $description]) {
+    $output->writeln("<info>$command</info>\t$description");
+}

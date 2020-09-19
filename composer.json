@@ -54,7 +54,7 @@
         "test": "phpunit --colors=always",
         "dev-enable": "cp config/autoload/develop.local.php.dist config/autoload/develop.local.php",
         "dev-disable": "rm config/autoload/develop.local.php",
-        "clear-cache": "rm config/autoload/config-cache.php",
+        "clear-cache": "rm var/config-cache.php",
         "cs-check": "phpcs",
         "cs-fix": "phpcbf"
     }
