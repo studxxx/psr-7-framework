@@ -17,18 +17,22 @@ class ClearCacheCommand
 
         $alias = $argv[0] ?? null;
 
-        if (!$alias) {
-            \fwrite(\STDOUT, 'Input path: ');
-            $alias = \trim(fgets(\STDIN));
+        if (empty($alias)) {
+            $options = array_merge(['all'], array_keys($this->paths));
+            do {
+                \fwrite(\STDOUT, 'Choose path [' . implode(', ', $options) . ']: ');
+                $choose = \trim(fgets(\STDIN));
+            } while (!\in_array($choose, $options, true));
+            $alias = $choose;
         }
 
-        if (!empty($alias)) {
+        if ($alias === 'all') {
+            $paths = $this->paths;
+        } else {
             if (!array_key_exists($alias, $this->paths)) {
                 throw new \InvalidArgumentException("Unknown path alias \"$alias\"");
             }
             $paths = [$alias => $this->paths[$alias]];
-        } else {
-            $paths = $this->paths;
         }
 
         foreach ($paths as $path) {
