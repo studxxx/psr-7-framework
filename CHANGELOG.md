@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this **demo framework** project will be documented in this file.
 
+## [0.0.9] - 2020-09-19
+### Added
+- Console application
+- symfony/console package
+
 ## [0.0.8] - 2020-09-17
 ### Added
 - Error Handler
