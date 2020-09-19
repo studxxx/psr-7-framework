@@ -1,7 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-use App\Console\Command\ClearCacheCommand;
 use Framework\Console;
 
 chdir(dirname(__DIR__));
@@ -11,5 +10,10 @@ require 'vendor/autoload.php';
 $container = require 'config/container.php';
 
 $cli = new Console\Application();
-$cli->add($container->get(ClearCacheCommand::class));
+
+$commands = $container->get('config')['console']['commands'];
+
+foreach ($commands as $command) {
+    $cli->add($container->get($command));
+}
 $cli->run(new Console\Input($argv), new Console\Output());
