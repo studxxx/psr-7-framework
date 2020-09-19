@@ -17,24 +17,26 @@ class ClearCacheCommand
 
         $alias = $argv[0] ?? null;
 
+        if (!$alias) {
+            \fwrite(\STDOUT, 'Input path: ');
+            $alias = \trim(fgets(\STDIN));
+        }
+
         if (!empty($alias)) {
             if (!array_key_exists($alias, $this->paths)) {
                 throw new \InvalidArgumentException("Unknown path alias \"$alias\"");
             }
-            if (file_exists($this->paths[$alias])) {
-                echo 'Remove ' . $this->paths[$alias] . PHP_EOL;
-                $this->delete($this->paths[$alias]);
-            } else {
-                echo 'Skip ' . $this->paths[$alias]. PHP_EOL;
-            }
+            $paths = [$alias => $this->paths[$alias]];
         } else {
-            foreach ($this->paths as $path) {
-                if (file_exists($path)) {
-                    echo 'Remove ' . $path . PHP_EOL;
-                    $this->delete($path);
-                } else {
-                    echo 'Skip ' . $path. PHP_EOL;
-                }
+            $paths = $this->paths;
+        }
+
+        foreach ($paths as $path) {
+            if (file_exists($path)) {
+                echo 'Remove ' . $path . PHP_EOL;
+                $this->delete($path);
+            } else {
+                echo 'Skip ' . $path. PHP_EOL;
             }
         }
 
