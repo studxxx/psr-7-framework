@@ -32,12 +32,10 @@ or
 - Container and DI
 - Template
 - Upgrade until PSR-15
-
-### In progress
 - Display Errors
 - Log
 
-### In ToDo
+### In progress
 - Console commands
 - Connect to DB
 - Plug assets

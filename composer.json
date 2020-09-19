@@ -13,6 +13,7 @@
         "psr/http-server-middleware": "^1.0@dev",
         "psr/log": "^1.1@dev",
         "roave/security-advisories": "dev-master",
+        "symfony/console": "^5.2@dev",
         "twig/twig": "3.x-dev",
         "zendframework/zend-config-aggregator": "^1.2@dev",
         "zendframework/zend-diactoros": "^2.1@dev",
@@ -54,7 +55,7 @@
         "test": "phpunit --colors=always",
         "dev-enable": "cp config/autoload/develop.local.php.dist config/autoload/develop.local.php",
         "dev-disable": "rm config/autoload/develop.local.php",
-        "clear-cache": "rm config/autoload/config-cache.php",
+        "cache-clear": "rm var/config-cache.php",
         "cs-check": "phpcs",
         "cs-fix": "phpcbf"
     }
