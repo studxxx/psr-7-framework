@@ -18,7 +18,11 @@ class ClearCacheCommand extends Command
     {
         $this->paths = $paths;
         $this->files = $files;
+        parent::__construct();
+    }
 
+    protected function configure(): void
+    {
         $this
             ->setName('cache:clear')
             ->setDescription('Clear cache');

@@ -9,6 +9,21 @@ abstract class Command
     private string $name;
     private string $description;
 
+    public function __construct(string $name = null)
+    {
+        if ($name === null) {
+            $this->setName(static::class);
+        } else {
+            $this->setName($name);
+        }
+
+        $this->configure();
+    }
+
+    protected function configure(): void
+    {
+    }
+
     abstract public function execute(Input $input, Output $output): void;
 
     public function getName(): string
