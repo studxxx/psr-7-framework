@@ -11,4 +11,6 @@ echo 'Clearing cache' . PHP_EOL;
 
 $command = $container->get(\App\Console\Command\ClearCacheCommand::class);
 
-$command->execute();
+$args = array_slice($argv, 1);
+
+$command->execute($args);

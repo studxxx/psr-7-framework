@@ -6,26 +6,36 @@ namespace App\Console\Command;
 
 class ClearCacheCommand
 {
-    private $paths = [
+    private array $paths = [
         'twig' => 'var/cache/twig',
         'db' => 'var/cache/db',
     ];
 
-    public function execute(): void
+    public function execute(array $argv): void
     {
-        global $argv;
-
         echo 'Clearing cache' . PHP_EOL;
 
-        $alias = $argv[1];
+        $alias = $argv[0] ?? null;
 
-        $path = $this->paths[$alias];
-
-        if (file_exists($path)) {
-            echo 'Remove ' . $path . PHP_EOL;
-            $this->delete($path);
+        if (!empty($alias)) {
+            if (!array_key_exists($alias, $this->paths)) {
+                throw new \InvalidArgumentException("Unknown path alias \"$alias\"");
+            }
+            if (file_exists($this->paths[$alias])) {
+                echo 'Remove ' . $this->paths[$alias] . PHP_EOL;
+                $this->delete($this->paths[$alias]);
+            } else {
+                echo 'Skip ' . $this->paths[$alias]. PHP_EOL;
+            }
         } else {
-            echo 'Skip ' . $path . PHP_EOL;
+            foreach ($this->paths as $path) {
+                if (file_exists($path)) {
+                    echo 'Remove ' . $path . PHP_EOL;
+                    $this->delete($path);
+                } else {
+                    echo 'Skip ' . $path. PHP_EOL;
+                }
+            }
         }
 
         echo 'Done!' . PHP_EOL;
