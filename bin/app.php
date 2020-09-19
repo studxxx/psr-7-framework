@@ -25,6 +25,7 @@ $name = $input->getArgument(0);
 if (!empty($name)) {
     foreach ($commands as ['name' => $commandName, 'command' => $commandClass]) {
         if ($commandName === $name) {
+            /** @var \Framework\Console\Command $command */
             $command = $container->get($commandClass);
             $command->execute($input, $output);
             exit;

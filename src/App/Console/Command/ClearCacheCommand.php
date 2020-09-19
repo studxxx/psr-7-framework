@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App\Service\FileManager;
+use Framework\Console\Command;
 use Framework\Console\Input;
 use Framework\Console\Output;
 
-class ClearCacheCommand
+class ClearCacheCommand implements Command
 {
     private array $paths;
     private FileManager $files;
