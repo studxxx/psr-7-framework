@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Template\Php;
 
@@ -60,7 +62,7 @@ class PhpRenderer implements TemplateRenderer
             }
 
             return $this->render($this->extend);
-        } catch (\Throwable|\Exception $e) {
+        } catch (\Throwable | \Exception $e) {
             while (ob_get_level() > $level) {
                 ob_end_clean();
             }

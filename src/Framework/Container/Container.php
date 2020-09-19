@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Framework\Container;
 
@@ -33,7 +35,9 @@ class Container implements ContainerInterface
                             $args[] = [];
                         } else {
                             if (!$param->isDefaultValueAvailable()) {
-                                throw new ServiceNotFoundException("Unable to resolve \"{$param->getName()}\" in service \"$id\"");
+                                throw new ServiceNotFoundException(
+                                    "Unable to resolve \"{$param->getName()}\" in service \"$id\""
+                                );
                             }
                             $args[] = $param->getDefaultValue();
                         }
