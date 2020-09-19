@@ -6,11 +6,20 @@ namespace App\Console\Command;
 
 class ClearCacheCommand
 {
+    private $paths = [
+        'twig' => 'var/cache/twig',
+        'db' => 'var/cache/db',
+    ];
+
     public function execute(): void
     {
+        global $argv;
+
         echo 'Clearing cache' . PHP_EOL;
 
-        $path = 'var/cache/twig';
+        $alias = $argv[1];
+
+        $path = $this->paths[$alias];
 
         if (file_exists($path)) {
             echo 'Remove ' . $path . PHP_EOL;
