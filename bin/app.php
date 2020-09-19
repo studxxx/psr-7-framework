@@ -1,20 +1,37 @@
 #!/usr/bin/env php
 <?php
 
-use Framework\Http\Application;
-use Template\TemplateRenderer;
-
 chdir(dirname(__DIR__));
 require 'vendor/autoload.php';
 
 /** @var \Psr\Container\ContainerInterface $container */
 $container = require 'config/container.php';
 
-$app = $container->get(Application::class);
+function delete ($path) {
+    if (!file_exists($path)) {
+        return true;
+    }
 
-require 'config/pipeline.php';
-require 'config/routes.php';
+    if (!is_dir($path)) {
+        return unlink($path);
+    }
 
-$renderer = $container->get(TemplateRenderer::class);
-$html = $renderer->render('app/hello');
-echo $html.PHP_EOL;
+    foreach (scandir($path, SCANDIR_SORT_ASCENDING) as $item) {
+        if ($item === '.' || $item === '..') {
+            continue;
+        }
+
+        if (!delete($path . DIRECTORY_SEPARATOR . $item)) {
+            return false;
+        }
+    }
+
+    return rmdir($path);
+}
+
+echo 'Clearing cache' . PHP_EOL;
+delete('var/cache/twig');
+/** @var \Psr\Log\LoggerInterface $logger */
+$logger = $container->get(\Psr\Log\LoggerInterface::class);
+$logger->info('Clearing cache');
+echo 'Done!' . PHP_EOL;
