@@ -29,7 +29,7 @@ class ClearCacheCommand extends Console\Command\Command
         ;
     }
 
-    protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): void
+    protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): int
     {
         $output->writeln('<comment>Clearing cache</comment>');
 
@@ -39,7 +39,7 @@ class ClearCacheCommand extends Console\Command\Command
             /** @var Console\Helper\QuestionHelper $helper */
             $helper = $this->getHelper('question');
             $options = array_merge(array_keys($this->paths), ['all']);
-            $question = new Console\Question\ChoiceQuestion('Choose path', $options, 'all');
+            $question = new Console\Question\ChoiceQuestion('Choose path', $options, 0);
             $alias = $helper->ask($input, $output, $question);
         }
 
@@ -62,5 +62,7 @@ class ClearCacheCommand extends Console\Command\Command
         }
 
         $output->writeln('<info>Done!</info>');
+
+        return 0;
     }
 }
