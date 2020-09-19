@@ -1,6 +1,9 @@
 #!/usr/bin/env php
 <?php
 
+use App\Console\Command\ClearCacheCommand;
+use Framework\Console\Input;
+
 chdir(dirname(__DIR__));
 require 'vendor/autoload.php';
 
@@ -9,8 +12,9 @@ $container = require 'config/container.php';
 
 echo 'Clearing cache' . PHP_EOL;
 
-$command = $container->get(\App\Console\Command\ClearCacheCommand::class);
+/** @var ClearCacheCommand $command */
+$command = $container->get(ClearCacheCommand::class);
 
-$args = array_slice($argv, 1);
+$input = new Input($argv);
 
-$command->execute($args);
+$command->execute($input);
