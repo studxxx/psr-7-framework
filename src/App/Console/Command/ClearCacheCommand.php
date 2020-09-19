@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App\Service\FileManager;
-use Framework\Console\Command;
-use Framework\Console\Input;
-use Framework\Console\Output;
+use Symfony\Component\Console as Console;
+use Symfony\Component\Console\Input\InputArgument;
 
-class ClearCacheCommand extends Command
+class ClearCacheCommand extends Console\Command\Command
 {
     private array $paths;
     private FileManager $files;
@@ -25,17 +24,23 @@ class ClearCacheCommand extends Command
     {
         $this
             ->setName('cache:clear')
-            ->setDescription('Clear cache');
+            ->setDescription('Clear cache')
+            ->addArgument('alias', InputArgument::OPTIONAL, 'The alias of available paths.')
+        ;
     }
 
-    public function execute(Input $input, Output $output): void
+    protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): void
     {
         $output->writeln('<comment>Clearing cache</comment>');
 
-        $alias = $input->getArgument(1);
+        $alias = $input->getArgument('alias');
 
         if (empty($alias)) {
-            $alias = $input->choose('Choose path', array_merge(array_keys($this->paths), ['all']));
+            /** @var Console\Helper\QuestionHelper $helper */
+            $helper = $this->getHelper('question');
+            $options = array_merge(array_keys($this->paths), ['all']);
+            $question = new Console\Question\ChoiceQuestion('Choose path', $options, 'all');
+            $alias = $helper->ask($input, $output, $question);
         }
 
         if ($alias === 'all') {
