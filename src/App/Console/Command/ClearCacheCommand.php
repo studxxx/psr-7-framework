@@ -16,7 +16,7 @@ class ClearCacheCommand
 
     public function execute(Input $input, Output $output): void
     {
-        $output->writeln('Clearing cache');
+        $output->write('Clearing cache');
 
         $alias = $input->getArgument(0);
 
@@ -42,7 +42,7 @@ class ClearCacheCommand
             }
         }
 
-        $output->writeln('Done!');
+        $output->info('Done!');
     }
 
     private function delete(string $path): void

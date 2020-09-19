@@ -13,6 +13,4 @@ $container = require 'config/container.php';
 /** @var ClearCacheCommand $command */
 $command = $container->get(ClearCacheCommand::class);
 
-$input = new Console\Input($argv);
-
-$command->execute($input, new Console\Output());
+$command->execute(new Console\Input($argv), new Console\Output());
