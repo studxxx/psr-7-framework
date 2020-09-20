@@ -34,9 +34,9 @@ or
 - Upgrade until PSR-15
 - Display Errors
 - Log
+- Console commands
 
 ### In progress
-- Console commands
 - Connect to DB
 - Plug assets
 - ... and a little bit things

@@ -11,6 +11,7 @@ use Infrastructure\Framework\Http\Middleware\ErrorHandler\ErrorHandlerMiddleware
 use Infrastructure\Framework\Http\Middleware\ErrorHandler\HtmlErrorResponseGeneratorFactory;
 use Infrastructure\Framework\Http\Pipeline\MiddlewareResolverFactory;
 use Infrastructure\Framework\Http\Router\AuraRouterFactory;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
@@ -25,9 +26,22 @@ return [
             MiddlewareResolver::class => MiddlewareResolverFactory::class,
             ErrorHandlerMiddleware::class => ErrorHandlerMiddlewareFactory::class,
             ErrorResponseGenerator::class => HtmlErrorResponseGeneratorFactory::class,
-            LoggerInterface::class => LoggerFactory::class
+            LoggerInterface::class => LoggerFactory::class,
+            PDO::class => function (ContainerInterface $container) {
+                ['dsn' => $dsn, 'username' => $username, 'password' => $password] = $container->get('config')['pdo'];
+                return new PDO($dsn, $username, $password, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+                ]);
+            },
         ],
     ],
     'debug' => false,
     'config_cache_enabled' => true,
+    'db' => [
+        'pdo' => [
+            'dsn' => 'mysql:host=mysql;dbname=psr7;charset=utf8',
+            'username' => 'psr7',
+            'password' => 'secret',
+        ]
+    ],
 ];
