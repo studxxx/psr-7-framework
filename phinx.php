@@ -20,7 +20,7 @@ return
         ],
         'development' => [
             'adapter' => 'mysql',
-            'host' => 'localhost',
+            'host' => '0.0.0.0',
             'name' => 'psr7',
             'user' => 'root',
             'pass' => 'secret',
@@ -29,7 +29,7 @@ return
         ],
         'testing' => [
             'adapter' => 'mysql',
-            'host' => 'localhost',
+            'host' => '0.0.0.0',
             'name' => 'psr7_test',
             'user' => 'root',
             'pass' => 'secret',
