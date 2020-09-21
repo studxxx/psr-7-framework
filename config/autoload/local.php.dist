@@ -8,4 +8,9 @@ return [
             'admin' => 'password',
         ],
     ],
+    'pdo' => [
+        'dsn' => 'mysql:host=mysql;dbname=psr7;charset=utf8',
+        'username' => 'psr7',
+        'password' => 'secret',
+    ],
 ];

@@ -25,7 +25,7 @@ return [
             MiddlewareResolver::class => MiddlewareResolverFactory::class,
             ErrorHandlerMiddleware::class => ErrorHandlerMiddlewareFactory::class,
             ErrorResponseGenerator::class => HtmlErrorResponseGeneratorFactory::class,
-            LoggerInterface::class => LoggerFactory::class
+            LoggerInterface::class => LoggerFactory::class,
         ],
     ],
     'debug' => false,
