@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Action\Blog;
 
+use App\ReadModel\Pagination;
 use App\ReadModel\PostReadRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -12,6 +13,7 @@ use Zend\Diactoros\Response\HtmlResponse;
 
 class IndexAction
 {
+    private const PER_PAGE = 5;
     private PostReadRepository $posts;
     private TemplateRenderer $template;
 
@@ -23,18 +25,15 @@ class IndexAction
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        $page = (int)$request->getAttribute('page', 1);
-
-        $perPage = 3;
-        $offset = ($page - 1) * $perPage;
-        $limit = $perPage;
-        $total = $this->posts->countAll();
-        $count = ceil($total/$perPage);
+        $pager = new Pagination(
+            $this->posts->countAll(),
+            (int)$request->getAttribute('page', 1),
+            self::PER_PAGE
+        );
 
         return new HtmlResponse($this->template->render('app/blog/index', [
-            'posts' => $this->posts->getAll($offset, $limit),
-            'page' => $page,
-            'count' => $count,
+            'posts' => $this->posts->getAll($pager->getOffset(), $pager->getLimit()),
+            'pager' => $pager,
         ]));
     }
 }
