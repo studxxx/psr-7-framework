@@ -15,9 +15,11 @@ class PostReadRepository
         $this->pdo = $pdo;
     }
 
-    public function getAll(): array
+    public function getAll(int $offset, int $limit): array
     {
-        $stmt = $this->pdo->prepare('select * from posts order by id desc');
+        $stmt = $this->pdo->prepare('select * from posts order by id desc limit :limit offset :offset');
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
         $stmt->execute();
 
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -44,5 +46,11 @@ class PostReadRepository
         $post->title = $row['title'];
         $post->content = $row['content'];
         return $post;
+    }
+
+    public function countAll(): int
+    {
+        $stmt = $this->pdo->query('select count(id) from posts');
+        return (int) $stmt->fetchColumn();
     }
 }
