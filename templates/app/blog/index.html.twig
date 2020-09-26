@@ -28,16 +28,11 @@
             </div>
         </div>
     {% endfor %}
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            {% for item in 1 .. count %}
-            <li class="page-item{% if item == page %} active{% endif %}">
-                <a class="page-link" href="{{ item == 1 ? path('blog') : path('blog_page', {'page': item}) }}">
-                    {{ item }}
-                </a>
-            </li>
-            {% endfor %}
-        </ul>
-    </nav>
+
+    {% include 'share/pager.html.twig' with {
+        'pager': pager,
+        'main_route': 'blog',
+        'route': 'blog_page',
+    } %}
 </div>
 {% endblock %}
