@@ -13,6 +13,7 @@
         "psr/http-server-middleware": "^1.0@dev",
         "psr/log": "^1.1@dev",
         "roave/security-advisories": "dev-master",
+        "robmorgan/phinx": "dev-master",
         "symfony/console": "^5.2@dev",
         "twig/twig": "3.x-dev",
         "zendframework/zend-config-aggregator": "^1.2@dev",
@@ -43,6 +44,7 @@
     },
     "require-dev": {
         "filp/whoops": "^2.6@dev",
+        "fzaninotto/faker": "^1.9@dev",
         "phpunit/phpunit": "^9.4@dev",
         "squizlabs/php_codesniffer": "^3.0@dev"
     },

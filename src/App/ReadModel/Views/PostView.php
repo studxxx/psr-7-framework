@@ -6,7 +6,7 @@ namespace App\ReadModel\Views;
 
 class PostView
 {
-    public $id;
+    public int $id;
     public \DateTimeImmutable $date;
     public string $title;
     public string $content;

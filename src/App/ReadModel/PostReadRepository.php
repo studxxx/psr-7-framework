@@ -39,7 +39,7 @@ class PostReadRepository
     private function hydratePost(array $row): PostView
     {
         $post = new PostView();
-        $post->id = $row['id'];
+        $post->id = (int) $row['id'];
         $post->date = new \DateTimeImmutable($row['date']);
         $post->title = $row['title'];
         $post->content = $row['content'];
