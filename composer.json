@@ -7,6 +7,7 @@
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "aura/router": "3.x-dev",
+        "dasprid/container-interop-doctrine": "dev-master",
         "monolog/monolog": "^2.0@dev",
         "psr/container": "^1.0@dev",
         "psr/http-message": "^1.0@dev",
