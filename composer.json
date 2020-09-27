@@ -60,6 +60,7 @@
         "dev-disable": "rm config/autoload/develop.local.php",
         "cache-clear": "rm var/config-cache.php",
         "cs-check": "phpcs",
-        "cs-fix": "phpcbf"
+        "cs-fix": "phpcbf",
+        "doctrine": "doctrine --ansi"
     }
 }
