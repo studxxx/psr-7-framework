@@ -12,6 +12,7 @@ return [
     'dependencies' => [
         'factories' => [
             EntityManagerInterface::class => EntityManagerFactory::class,
+            \App\ReadModel\PostReadRepository::class => \Infrastructure\App\ReadModel\PostReadRepositoryFactory::class,
         ],
     ],
     'doctrine' => [

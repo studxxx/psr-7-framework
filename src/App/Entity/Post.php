@@ -45,7 +45,7 @@ class Post
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="post", orphanRemoval=true, cascade={"persist"})
      * @ORM\OrderBy({"date" = "ASC"})
      */
-    private ArrayCollection $comments;
+    private $comments;
 
     public function __construct(DateTimeImmutable $date, string $title, Content $content, Meta $meta)
     {
@@ -115,5 +115,10 @@ class Post
     public function getComments()
     {
         return $this->comments;
+    }
+
+    public function getCommentsCount(): int
+    {
+        return $this->comments->count();
     }
 }

@@ -44,7 +44,7 @@ class PostReadRepository
 
     public function countAll(): int
     {
-        return $this->repository
+        return (int)$this->repository
             ->createQueryBuilder('p')
             ->select('COUNT(p)')
             ->getQuery()
