@@ -10,6 +10,12 @@ return [
         'factories' => [
             ErrorResponseGenerator::class => WhoopsErrorResponseGeneratorFactory::class,
             RunInterface::class => WhoopsRunFactory::class,
+            Command\FixtureCommand::class => FixtureCommandFactory::class,
+        ],
+    ],
+    'console' => [
+        'commands' => [
+            Command\FixtureCommand::class,
         ],
     ],
     'debug' => true,

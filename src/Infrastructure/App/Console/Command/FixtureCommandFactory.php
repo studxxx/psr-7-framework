@@ -10,6 +10,6 @@ class FixtureCommandFactory
 {
     public function __invoke(ContainerInterface $container): FixtureCommand
     {
-        return new FixtureCommand($container->get(EntityManagerInterface::class), 'src/Fixtures');
+        return new FixtureCommand($container->get(EntityManagerInterface::class), 'src/Fixture');
     }
 }
