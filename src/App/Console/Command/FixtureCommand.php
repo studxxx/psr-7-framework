@@ -29,7 +29,7 @@ class FixtureCommand extends Console\Command\Command
             ->setDescription('Load fixtures');
     }
 
-    protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
+    protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): int
     {
         $output->writeln('<comment>Loading fixtures</comment>>');
         $loader = new Loader();
@@ -44,5 +44,7 @@ class FixtureCommand extends Console\Command\Command
         $executor->execute($loader->getFixtures());
 
         $output->writeln('<info>Done!</info>');
+
+        return 0;
     }
 }
