@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\ReadModel\PostReadRepository;
 use ContainerInteropDoctrine\EntityManagerFactory;
+use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\DBAL\Driver\PDO\MySQL\Driver;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
@@ -19,6 +20,14 @@ return [
         ],
     ],
     'doctrine' => [
+        'configuration' => [
+            'orm_default' => [
+                'result_cache' => 'filesystem',
+                'metadata_cache' => 'filesystem',
+                'query_cache' => 'filesystem',
+                'hydration_cache' => 'filesystem',
+            ],
+        ],
         'connection' => [
             'orm_default' => [
                 'driver_class' => Driver::class,
@@ -33,8 +42,14 @@ return [
             ],
             'entities' => [
                 'class' => AnnotationDriver::class,
-                'cache' => 'array',
+                'cache' => 'filesystem',
                 'paths' => ['src/App/Entity'],
+            ],
+        ],
+        'cache' => [
+            'filesystem' => [
+                'class' => FilesystemCache::class,
+                'directory' => 'var/cache/doctrine'
             ],
         ],
     ],
