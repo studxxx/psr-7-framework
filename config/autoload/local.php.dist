@@ -9,17 +9,9 @@ return [
         ],
     ],
 
-    'doctrine' => [
-        'connection' => [
-            'orm_default' => [
-                'params' => [
-                    'url' => 'mysql://psr7:secret@mysql/psr7',
-//                    'dbname' => 'psr7',
-//                    'user' => 'psr7',
-//                    'password' => 'secret',
-//                    'host' => 'mysql',
-                ],
-            ],
-        ],
+    'pdo' => [
+            'dsn' => 'mysql:host=mysql;dbname=psr7;charset=utf8',
+            'username' => 'psr7',
+            'password' => 'secret',
     ],
 ];
