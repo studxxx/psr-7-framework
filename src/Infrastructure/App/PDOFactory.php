@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Infrastructure\App;
 
+use Doctrine\DBAL\Driver\Connection as DriverConnection;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 
 class PDOFactory
 {
-    public function __invoke(ContainerInterface $container): \PDO
+    public function __invoke(ContainerInterface $container): DriverConnection
     {
-        ['dsn' => $dsn, 'username' => $username, 'password' => $password] = $container->get('config')['pdo'];
-        return new \PDO($dsn, $username, $password, [
-            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
-        ]);
+        /** @var EntityManagerInterface $em */
+        $em = $container->get(EntityManagerInterface::class);
+
+        return $em->getConnection()->getWrappedConnection();
     }
 }

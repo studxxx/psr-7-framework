@@ -45,6 +45,7 @@
         }
     },
     "require-dev": {
+        "doctrine/data-fixtures": "^1.4@dev",
         "filp/whoops": "^2.6@dev",
         "fzaninotto/faker": "^1.9@dev",
         "phpunit/phpunit": "^9.4@dev",

@@ -32,7 +32,7 @@ class IndexAction
         );
 
         return new HtmlResponse($this->template->render('app/blog/index', [
-            'posts' => $this->posts->getAll($pager->getOffset(), $pager->getLimit()),
+            'posts' => $this->posts->all($pager->getOffset(), $pager->getLimit()),
             'pager' => $pager,
         ]));
     }
