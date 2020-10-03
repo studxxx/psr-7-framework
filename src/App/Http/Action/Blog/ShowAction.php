@@ -24,7 +24,7 @@ class ShowAction
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        if (!$post = $this->posts->find($request->getAttribute('id'))) {
+        if (!$post = $this->posts->find((int)$request->getAttribute('id') ?? null)) {
             return new EmptyResponse(404);
         }
         return new HtmlResponse($this->template->render('app/blog/show', [

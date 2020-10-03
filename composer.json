@@ -7,12 +7,15 @@
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "aura/router": "3.x-dev",
+        "dasprid/container-interop-doctrine": "dev-master",
+        "doctrine/migrations": "^2.2@dev",
         "monolog/monolog": "^2.0@dev",
         "psr/container": "^1.0@dev",
         "psr/http-message": "^1.0@dev",
         "psr/http-server-middleware": "^1.0@dev",
         "psr/log": "^1.1@dev",
         "roave/security-advisories": "dev-master",
+        "robmorgan/phinx": "dev-master",
         "symfony/console": "^5.2@dev",
         "twig/twig": "3.x-dev",
         "zendframework/zend-config-aggregator": "^1.2@dev",
@@ -42,7 +45,9 @@
         }
     },
     "require-dev": {
+        "doctrine/data-fixtures": "^1.4@dev",
         "filp/whoops": "^2.6@dev",
+        "fzaninotto/faker": "^1.9@dev",
         "phpunit/phpunit": "^9.4@dev",
         "squizlabs/php_codesniffer": "^3.0@dev"
     },
@@ -57,6 +62,7 @@
         "dev-disable": "rm config/autoload/develop.local.php",
         "cache-clear": "rm var/config-cache.php",
         "cs-check": "phpcs",
-        "cs-fix": "phpcbf"
+        "cs-fix": "phpcbf",
+        "doctrine": "doctrine --ansi"
     }
 }

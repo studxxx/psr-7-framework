@@ -1,15 +1,15 @@
 {% extends 'layout/default.html.twig' %}
 
-{% block title %}{{ post.title }}{% endblock %}
+{% block title %}{{ post.meta.title }}{% endblock %}
 
-{% block meta %}<meta name="description" content="About psr framework">{% endblock %}
+{% block meta %}<meta name="description" content="{{ post.meta.description }}">{% endblock %}
 
 {% block breadcrumbs %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
         <li class="breadcrumb-item"><a href="{{ path('blog') }}">Blog</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ 'title' }}</li>
+        <li class="breadcrumb-item active" aria-current="page">{{ post.title }}</li>
     </ol>
 </nav>
 {% endblock %}
@@ -18,9 +18,21 @@
 <div class="container">
     <h1>{{ post.title }}</h1>
 
-    <div class="panel panel-default">
-        <div class="panel-heading"><span class="pull-right">{{ post.date|date('Y-m-d') }}</span></div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">{{ post.date|date('Y-m-d') }}</div>
         <div class="panel-body">{{ post.content|nl2br }}</div>
     </div>
+
+    <h2>Comments</h2>
+
+    {% for comment in post.comments %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="pull-right">{{ comment.date|date('Y-m-d') }}</span>
+                {{ comment.author }}
+            </div>
+            <div class="panel-body">{{ comment.text|nl2br }}</div>
+        </div>
+    {% endfor %}
 </div>
 {% endblock %}

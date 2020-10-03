@@ -1,11 +1,17 @@
 <?php
 
-return [
-    'debug' => true,
+use Doctrine\DBAL\Driver\PDO\MySQL\Driver;
 
+return [
     'auth' => [
         'users' => [
             'admin' => 'password',
         ],
+    ],
+
+    'pdo' => [
+            'dsn' => 'mysql:host=mysql;dbname=psr7;charset=utf8',
+            'username' => 'psr7',
+            'password' => 'secret',
     ],
 ];

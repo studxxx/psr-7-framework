@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this **demo framework** project will be documented in this file.
 
+## [0.0.10] - 2020-10-03
+### Added
+- implementation doctrine
+- dasprid/container-interop-doctrine package
+- doctrine/migrations package
+- doctrine/data-fixtures package
+
 ## [0.0.9] - 2020-09-19
 ### Added
 - Console application
