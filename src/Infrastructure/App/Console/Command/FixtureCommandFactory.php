@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Infrastructure\App\Console\Command;
 
 use App\Console\Command\FixtureCommand;
