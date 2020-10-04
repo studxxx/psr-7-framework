@@ -8,6 +8,8 @@ $app->pipe(FrameworkMiddleware\ErrorHandler\ErrorHandlerMiddleware::class);
 $app->pipe(Middleware\ResponseLoggerMiddleware::class);
 $app->pipe(Middleware\CredentialsMiddleware::class);
 $app->pipe(Middleware\ProfilerMiddleware::class);
+$app->pipe(FrameworkMiddleware\BodyParamsMiddleware::class);
 $app->pipe(FrameworkMiddleware\RouteMiddleware::class);
+$app->pipe(Middleware\EmptyResponseMiddleware::class);
 $app->pipe('cabinet', Middleware\BasicAuthMiddleware::class);
 $app->pipe(FrameworkMiddleware\DispatchMiddleware::class);

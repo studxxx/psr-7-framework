@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this **demo framework** project will be documented in this file.
 
+## [0.0.11] - 2020-10-04
+### Added
+- control of resources
+- stormiix/laravel-mix-twig-extension package
+### Update
+- error handler
+
 ## [0.0.10] - 2020-10-03
 ### Added
 - implementation doctrine
