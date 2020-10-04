@@ -18,12 +18,12 @@
     <h1>Blog</h1>
 
     {% for post in posts %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <span class="pull-right">{{ post.date|date('Y-m-d') }}, {{ post.commentsCount }} comments</span>
+        <div class="card mb-3">
+            <div class="card-header">
+                <span class="float-right">{{ post.date|date('Y-m-d') }}, {{ post.commentsCount }} comments</span>
                 <a href="{{ path('blog_show', {'id': post.id}) }}">{{ post.title }}</a>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 {{ post.preview|nl2br }}
             </div>
         </div>

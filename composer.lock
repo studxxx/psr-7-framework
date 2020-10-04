@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6796ff090e2b37ac37eceabfbb6464f",
+    "content-hash": "b7d2d9143cc2c5baf6ec9d84b0e39a62",
     "packages": [
         {
             "name": "aura/router",
@@ -700,12 +700,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "447225a1678e83436dac266bacaf3852bb98936d"
+                "reference": "ad0168de43a6affee163b8073c8e2e9b573c90d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/447225a1678e83436dac266bacaf3852bb98936d",
-                "reference": "447225a1678e83436dac266bacaf3852bb98936d",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/ad0168de43a6affee163b8073c8e2e9b573c90d9",
+                "reference": "ad0168de43a6affee163b8073c8e2e9b573c90d9",
                 "shasum": ""
             },
             "require": {
@@ -800,7 +800,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-29T19:28:17+00:00"
+            "time": "2020-10-03T14:31:47+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -2645,6 +2645,49 @@
             "time": "2020-10-01T14:07:10+00:00"
         },
         {
+            "name": "stormiix/laravel-mix-twig-extension",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Stormix/laravel-mix-twig-extension.git",
+                "reference": "302838a8d4ba435af502dc54abee6752bc5750fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Stormix/laravel-mix-twig-extension/zipball/302838a8d4ba435af502dc54abee6752bc5750fb",
+                "reference": "302838a8d4ba435af502dc54abee6752bc5750fb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0",
+                "twig/twig": "~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stormiix\\Twig\\Extension\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Laravel Mix twig extension",
+            "keywords": [
+                "extension",
+                "laravel",
+                "mix",
+                "php",
+                "twig"
+            ],
+            "time": "2018-04-01T12:46:21+00:00"
+        },
+        {
             "name": "symfony/config",
             "version": "dev-master",
             "source": {
@@ -3646,20 +3689,20 @@
         },
         {
             "name": "twig/twig",
-            "version": "3.x-dev",
+            "version": "2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "dba3517f4b6a91fae8f3fdac279be42b67a365bd"
+                "reference": "f4aacffcbb556d443a15c4e49d62070903c05270"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/dba3517f4b6a91fae8f3fdac279be42b67a365bd",
-                "reference": "dba3517f4b6a91fae8f3fdac279be42b67a365bd",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/f4aacffcbb556d443a15c4e49d62070903c05270",
+                "reference": "f4aacffcbb556d443a15c4e49d62070903c05270",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
+                "php": ">=7.1.3",
                 "symfony/polyfill-ctype": "^1.8",
                 "symfony/polyfill-mbstring": "^1.3"
             },
@@ -3670,10 +3713,13 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1-dev"
+                    "dev-master": "2.14-dev"
                 }
             },
             "autoload": {
+                "psr-0": {
+                    "Twig_": "lib/"
+                },
                 "psr-4": {
                     "Twig\\": "src/"
                 }
@@ -3714,7 +3760,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-27T05:01:41+00:00"
+            "time": "2020-09-27T05:01:29+00:00"
         },
         {
             "name": "webimpress/safe-writer",
@@ -6250,6 +6296,7 @@
         "psr/log": 20,
         "roave/security-advisories": 20,
         "robmorgan/phinx": 20,
+        "stormiix/laravel-mix-twig-extension": 20,
         "symfony/console": 20,
         "twig/twig": 20,
         "zendframework/zend-config-aggregator": 20,
