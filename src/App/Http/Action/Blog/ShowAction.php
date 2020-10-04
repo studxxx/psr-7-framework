@@ -7,11 +7,12 @@ namespace App\Http\Action\Blog;
 use App\ReadModel\PostReadRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Template\TemplateRenderer;
 use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\Response\HtmlResponse;
 
-class ShowAction
+class ShowAction implements RequestHandlerInterface
 {
     private PostReadRepository $posts;
     private TemplateRenderer $template;
@@ -22,7 +23,7 @@ class ShowAction
         $this->template = $template;
     }
 
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (!$post = $this->posts->find((int)$request->getAttribute('id') ?? null)) {
             return new EmptyResponse(404);
