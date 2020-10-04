@@ -1,7 +1,9 @@
 <?php
 
+use Infrastructure\App\Twig\MixExtensionFactory;
 use Infrastructure\Framework\Template\TemplateRendererFactory;
 use Infrastructure\Framework\Template\Twig\TwigEnvironmentFactory;
+use Stormiix\Twig\Extension\MixExtension;
 use Template\TemplateRenderer;
 
 return [
@@ -9,6 +11,7 @@ return [
         'factories' => [
             TemplateRenderer::class => TemplateRendererFactory::class,
             Twig\Environment::class => TwigEnvironmentFactory::class,
+            MixExtension::class => MixExtensionFactory::class
         ],
     ],
     'templates' => [
@@ -19,6 +22,11 @@ return [
         'cache_dir' => 'var/cache/twig',
         'extensions' => [
             // Put extension here like RouteExtension::class,
+            MixExtension::class,
         ],
+    ],
+    'mix' => [
+        'root' => 'public/build',
+        'manifest' => 'mix-manifest.json',
     ],
 ];
